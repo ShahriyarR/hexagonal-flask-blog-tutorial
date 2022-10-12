@@ -1,4 +1,3 @@
-import functools
 import sqlite3
 import click
 from flask import current_app
@@ -36,7 +35,5 @@ def close_db(db: Callable[[], sqlite3.Connection], e=None):
         db().close()
 
 
-def init_app(app, container):
-    _close = functools.partial(close_db, container.db_connection)
-    # app.teardown_appcontext(_close)
+def init_app(app):
     app.cli.add_command(init_db_command)
