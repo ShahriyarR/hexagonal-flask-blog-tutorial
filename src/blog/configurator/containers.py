@@ -1,8 +1,8 @@
 from dependency_injector import containers, providers
 
-from src.main.config import get_db
-from src.main.user_containers import UserContainer
-from src.main.post_containers import PostContainer
+from src.blog.configurator.config import get_db
+from src.blog.configurator.user_containers import UserContainer
+from src.blog.configurator.post_containers import PostContainer
 
 
 class Container(containers.DeclarativeContainer):

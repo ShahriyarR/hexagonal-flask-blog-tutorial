@@ -1,0 +1,24 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "blog"
+authors = [{name = "Shako Rzayev", email = "rzayev.sehriyar@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+dependencies = [
+    "dependency-injector >= 4.41.0",
+    "flask >= 2.3.2",
+]
+
+[project.urls]
+Home = "https://github.com/ShahriyarR/hexagonal-flask-blog-tutorial"
+
+[project.optional-dependencies]
+test = [
+    "pytest-flask >= 1.2.0 ",
+    "pytest-cov >= 4.0.0",
+]

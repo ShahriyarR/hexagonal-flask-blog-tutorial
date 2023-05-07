@@ -1,8 +1,8 @@
 from typing import Optional, Any
 from flask import abort, g
-from . import CreatePostInputDto, UpdatePostInputDto, DeletePostInputDto
-from src.domain.ports.repository import RepositoryInterface
-from src.domain.model.post import Post, post_factory
+from src.blog.domain.ports import CreatePostInputDto, UpdatePostInputDto, DeletePostInputDto
+from src.blog.domain.ports.repositories.repository import RepositoryInterface
+from src.blog.domain.model.post import Post, post_factory
 
 
 class BlogDBOperationError(Exception):
