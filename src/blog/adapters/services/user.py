@@ -3,17 +3,18 @@ from typing import Any, Optional
 from src.blog.domain.model import User, user_factory
 from src.blog.domain.ports import RegisterUserInputDto
 from src.blog.domain.ports.repositories.repository import RepositoryInterface
+from src.blog.domain.ports.services.user import UserServiceInterface
 
 
 class UserDBOperationError(Exception):
     ...
 
 
-class UserService:
+class UserService(UserServiceInterface):
     def __init__(self, user_repo: RepositoryInterface) -> None:
         self.user_repo = user_repo
 
-    def create(self, user: RegisterUserInputDto) -> User:
+    def _create(self, user: RegisterUserInputDto) -> User:
         user = user_factory(user_name=user.user_name, password=user.password)
         data = (user.id_, user.user_name, user.password)
         query = "INSERT INTO user (id_, username, password) VALUES (?, ?, ?)"
@@ -23,7 +24,7 @@ class UserService:
             raise UserDBOperationError(err) from err
         return user
 
-    def get_user_by_user_name(self, user_name: str) -> Optional[tuple[Any, ...]]:
+    def _get_user_by_user_name(self, user_name: str) -> Optional[tuple[Any, ...]]:
         data = (user_name,)
         query = "SELECT * FROM user WHERE username = ?"
         try:
@@ -31,7 +32,7 @@ class UserService:
         except Exception as err:
             raise UserDBOperationError() from err
 
-    def get_user_by_id(self, id_: int) -> Optional[tuple[Any, ...]]:
+    def _get_user_by_id(self, id_: int) -> Optional[tuple[Any, ...]]:
         data = (id_,)
         query = "SELECT * FROM user WHERE id = ?"
         try:

@@ -8,7 +8,7 @@ from src.blog.domain.ports import (
     delete_post_factory,
     update_post_factory,
 )
-from src.blog.domain.ports.services.post_service import (
+from src.blog.adapters.services.post import (
     BlogDBOperationError,
     PostService,
 )
