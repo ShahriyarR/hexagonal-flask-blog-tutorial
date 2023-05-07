@@ -1,14 +1,24 @@
 import functools
 
 from dependency_injector.wiring import Provide, inject
-from flask import (Blueprint, flash, g, redirect, render_template, request,
-                   session, url_for)
+from flask import (
+    Blueprint,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from werkzeug.security import check_password_hash
 
 from src.blog.configurator.containers import Container
 from src.blog.domain.ports import register_user_factory
-from src.blog.domain.ports.services.user_service import (UserDBOperationError,
-                                                         UserService)
+from src.blog.domain.ports.services.user_service import (
+    UserDBOperationError,
+    UserService,
+)
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 

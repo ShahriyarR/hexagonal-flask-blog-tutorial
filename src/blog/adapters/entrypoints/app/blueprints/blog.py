@@ -1,13 +1,17 @@
 from dependency_injector.wiring import Provide, inject
-from flask import (Blueprint, flash, g, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 
 from src.blog.adapters.entrypoints.app.blueprints.auth import login_required
 from src.blog.configurator.containers import Container
-from src.blog.domain.ports import (create_post_factory, delete_post_factory,
-                                   update_post_factory)
-from src.blog.domain.ports.services.post_service import (BlogDBOperationError,
-                                                         PostService)
+from src.blog.domain.ports import (
+    create_post_factory,
+    delete_post_factory,
+    update_post_factory,
+)
+from src.blog.domain.ports.services.post_service import (
+    BlogDBOperationError,
+    PostService,
+)
 
 blueprint = Blueprint("post", __name__)
 
