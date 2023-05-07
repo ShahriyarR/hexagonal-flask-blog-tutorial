@@ -1,13 +1,16 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Any
+from typing import Any, Optional
 
 from src.blog.domain.model import Post
-from src.blog.domain.ports import CreatePostInputDto, UpdatePostInputDto, DeletePostInputDto
+from src.blog.domain.ports import (
+    CreatePostInputDto,
+    DeletePostInputDto,
+    UpdatePostInputDto,
+)
 from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class PostServiceInterface(ABC):
-
     @abstractmethod
     def __init__(self, post_repo: RepositoryInterface) -> None:
         raise NotImplementedError
@@ -46,5 +49,3 @@ class PostServiceInterface(ABC):
     @abstractmethod
     def _get_post_by_id(self, _id: int, check_author: bool = True) -> Post:
         raise NotImplementedError
-
-

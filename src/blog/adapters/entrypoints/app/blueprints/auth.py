@@ -13,12 +13,9 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
+from src.blog.adapters.services.user import UserDBOperationError, UserService
 from src.blog.configurator.containers import Container
 from src.blog.domain.ports import register_user_factory
-from src.blog.adapters.services.user import (
-    UserDBOperationError,
-    UserService,
-)
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 

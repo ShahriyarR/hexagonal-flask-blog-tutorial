@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Any
+from typing import Any, Optional
 
 from src.blog.domain.model import User
 from src.blog.domain.ports import RegisterUserInputDto
@@ -7,7 +7,6 @@ from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class UserServiceInterface(ABC):
-
     @abstractmethod
     def __init__(self, user_repo: RepositoryInterface) -> None:
         raise NotImplementedError
@@ -32,4 +31,3 @@ class UserServiceInterface(ABC):
     @abstractmethod
     def _get_user_by_id(self, id_: int) -> Optional[tuple[Any, ...]]:
         raise NotImplementedError
-
