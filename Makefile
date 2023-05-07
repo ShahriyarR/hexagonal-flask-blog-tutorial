@@ -51,7 +51,3 @@ type-check:
 secure:
 	${PYTHON} -m bandit -r src --config pyproject.toml
 
-clean_app:
-	rm -rf venv .out .pytest_cache .tox  dist build analysis
-	find . -type f -name *.pyc -delete
-	find . -type d -name __pycache__ -delete

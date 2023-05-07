@@ -34,3 +34,32 @@ dev = [
     "flake8-bugbear >= 22.12.6",
     "flake8-cognitive-complexity >= 0.1.0",
 ]
+
+[tool.isort]
+profile = "black"
+py_version = 310
+skip = [".gitignore", ".dockerignore"]
+extend_skip = [".md", ".json"]
+skip_glob = ["docs/*"]
+
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.bandit]
+skips = ["B311"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration relatively slow (deselect with '-m \"not integration\"')",
+    "serial",
+]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+testpaths = "tests"

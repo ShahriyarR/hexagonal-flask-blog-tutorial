@@ -3,8 +3,11 @@ from typing import Any, Optional
 from flask import abort, g
 
 from src.blog.domain.model.post import Post, post_factory
-from src.blog.domain.ports import (CreatePostInputDto, DeletePostInputDto,
-                                   UpdatePostInputDto)
+from src.blog.domain.ports import (
+    CreatePostInputDto,
+    DeletePostInputDto,
+    UpdatePostInputDto,
+)
 from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
