@@ -15,7 +15,7 @@ from werkzeug.security import check_password_hash
 
 from src.blog.adapters.services.user import UserDBOperationError, UserService
 from src.blog.configurator.containers import Container
-from src.blog.domain.ports import register_user_factory
+from src.blog.domain.model.schemas import register_user_factory
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
