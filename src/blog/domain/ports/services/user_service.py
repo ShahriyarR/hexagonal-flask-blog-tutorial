@@ -1,7 +1,7 @@
 from typing import Optional, Any
-from . import RegisterUserInputDto
-from ..model import user_factory, User
-from .repository import RepositoryInterface
+from src.blog.domain.ports import RegisterUserInputDto
+from src.blog.domain.model import user_factory, User
+from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class UserDBOperationError(Exception):

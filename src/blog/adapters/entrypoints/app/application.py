@@ -1,7 +1,7 @@
-from flask import Flask, url_for
+from flask import Flask
 
-from src.main.containers import Container
-from src.main.config import init_app
+from src.blog.configurator.containers import Container
+from src.blog.configurator.config import init_app
 from .blueprints.blog import blueprint as blog_blueprint
 from .blueprints.auth import blueprint as user_blueprint
 

@@ -4,9 +4,9 @@ from flask import Blueprint, request, redirect, url_for, flash, render_template,
 from dependency_injector.wiring import inject, Provide
 from werkzeug.security import check_password_hash
 
-from src.domain.ports import register_user_factory
-from src.domain.ports.user_service import UserService, UserDBOperationError
-from src.main.containers import Container
+from src.blog.domain.ports import register_user_factory
+from src.blog.domain.ports.services.user_service import UserService, UserDBOperationError
+from src.blog.configurator.containers import Container
 
 blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 
