@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Optional
 
 from src.blog.domain.model import Post
-from src.blog.domain.ports import (
+from src.blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
     UpdatePostInputDto,
