@@ -1,0 +1,6 @@
+class BlogDBOperationError(Exception):
+    ...
+
+
+class UserDBOperationError(Exception):
+    ...
