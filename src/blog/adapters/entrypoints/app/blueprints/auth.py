@@ -1,14 +1,16 @@
 import functools
 
-from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import Provide, inject
+from flask import (Blueprint, flash, g, redirect, render_template, request,
+                   session, url_for)
 from werkzeug.security import check_password_hash
 
-from src.blog.domain.ports import register_user_factory
-from src.blog.domain.ports.services.user_service import UserService, UserDBOperationError
 from src.blog.configurator.containers import Container
+from src.blog.domain.ports import register_user_factory
+from src.blog.domain.ports.services.user_service import (UserDBOperationError,
+                                                         UserService)
 
-blueprint = Blueprint('auth', __name__, url_prefix='/auth')
+blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 def login_required(view):
@@ -26,7 +28,9 @@ def login_required(view):
 
 @blueprint.before_app_request
 @inject
-def load_logged_in_user(user_service: UserService = Provide[Container.user_package.user_service]):
+def load_logged_in_user(
+    user_service: UserService = Provide[Container.user_package.user_service],
+):
     """If a user id is stored in the session, load the user object from
     the database into ``g.user``."""
     user_id = session.get("user_id")
@@ -34,22 +38,20 @@ def load_logged_in_user(user_service: UserService = Provide[Container.user_packa
     if user_id is None:
         g.user = None
     else:
-        g.user = (
-            user_service.get_user_by_id(user_id)
-        )
+        g.user = user_service.get_user_by_id(user_id)
 
 
-@blueprint.route('/register', methods=('GET', 'POST'))
+@blueprint.route("/register", methods=("GET", "POST"))
 @inject
 def register(user_service: UserService = Provide[Container.user_package.user_service]):
-    if request.method == 'POST':
-        user_name = request.form['username']
-        password = request.form['password']
+    if request.method == "POST":
+        user_name = request.form["username"]
+        password = request.form["password"]
         error = None
         if not user_name:
-            error = 'Username is required.'
+            error = "Username is required."
         elif not password:
-            error = 'Password is required.'
+            error = "Password is required."
         user_ = register_user_factory(user_name=user_name, password=password)
         if not error:
             try:
@@ -61,31 +63,31 @@ def register(user_service: UserService = Provide[Container.user_package.user_ser
                 return redirect(url_for("auth.login"))
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template("auth/register.html")
 
 
-@blueprint.route('/login', methods=('GET', 'POST'))
+@blueprint.route("/login", methods=("GET", "POST"))
 @inject
 def login(user_service: UserService = Provide[Container.user_package.user_service]):
-    if request.method == 'POST':
-        user_name = request.form['username']
-        password = request.form['password']
+    if request.method == "POST":
+        user_name = request.form["username"]
+        password = request.form["password"]
 
         error = None
         user = user_service.get_user_by_user_name(user_name=user_name)
         if not user:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = "Incorrect username."
+        elif not check_password_hash(user["password"], password):
+            error = "Incorrect password."
 
         if not error:
             session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            session["user_id"] = user["id"]
+            return redirect(url_for("index"))
 
         flash(error)
 
-    return render_template('auth/login.html')
+    return render_template("auth/login.html")
 
 
 @blueprint.route("/logout")

@@ -20,19 +20,22 @@ You can read it from original author:
 
 [The Pattern: Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/)
 
-### How to run
+## How to install for development?
 
-* Create virtualenv:
+Use virtualenv as:
 
-```
-virtualenv venv
-source venv/bin/activate
-```
+* `python3 -m venv .venv`
+* `source .venv/bin/activate`
 
-* Install requirements:
-```
-pip install -r requirements.txt
-```
+We use flit for the installation:
+
+Install flit:
+
+* `pip install flit==3.7.1`
+
+Install using make command:
+
+`make install-dev`
 
 * Init the database
 

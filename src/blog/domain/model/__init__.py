@@ -1,4 +1,4 @@
-from .post import post_factory, Post
-from .user import user_factory, User
+from .post import Post, post_factory
+from .user import User, user_factory
 
 __all__ = ["post_factory", "user_factory", "User", "Post"]

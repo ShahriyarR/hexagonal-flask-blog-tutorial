@@ -1,5 +1,5 @@
-from uuid import UUID, uuid4
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from uuid import uuid4
 
 
 @dataclass
