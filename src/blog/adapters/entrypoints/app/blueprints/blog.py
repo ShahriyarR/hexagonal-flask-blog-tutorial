@@ -4,7 +4,7 @@ from flask import Blueprint, flash, g, redirect, render_template, request, url_f
 from src.blog.adapters.entrypoints.app.blueprints.auth import login_required
 from src.blog.adapters.services.post import BlogDBOperationError, PostService
 from src.blog.configurator.containers import Container
-from src.blog.domain.ports import (
+from src.blog.domain.model.schemas import (
     create_post_factory,
     delete_post_factory,
     update_post_factory,
