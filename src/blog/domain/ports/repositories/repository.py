@@ -8,10 +8,16 @@ class RepositoryInterface(ABC):
     def __init__(self, db_conn: Callable[[], Connection]) -> None:
         self.db = db_conn
 
-    @abstractmethod
     def execute(self, query: str, data: tuple[Any, ...], commit: bool = False) -> Any:
-        ...
+        return self._execute(query, data, commit)
+
+    def commit(self) -> None:
+        return self._commit()
 
     @abstractmethod
-    def commit(self) -> None:
-        ...
+    def _execute(self, query: str, data: tuple[Any, ...], commit: bool = False) -> Any:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _commit(self) -> None:
+        raise NotImplementedError

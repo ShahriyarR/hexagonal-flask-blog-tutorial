@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
-from src.blog.adapters.repositories.post_repository import PostRepository
-from src.blog.domain.ports.services.post_service import PostService
+from src.blog.adapters.repositories.post import PostRepository
+from src.blog.adapters.services.post import PostService
 
 
 class PostContainer(containers.DeclarativeContainer):

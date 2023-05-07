@@ -15,7 +15,7 @@ from werkzeug.security import check_password_hash
 
 from src.blog.configurator.containers import Container
 from src.blog.domain.ports import register_user_factory
-from src.blog.domain.ports.services.user_service import (
+from src.blog.adapters.services.user import (
     UserDBOperationError,
     UserService,
 )

@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
-from src.blog.adapters.repositories.user_repository import UserRepository
-from src.blog.domain.ports.services.user_service import UserService
+from src.blog.adapters.repositories.user import UserRepository
+from src.blog.adapters.services.user import UserService
 
 
 class UserContainer(containers.DeclarativeContainer):
