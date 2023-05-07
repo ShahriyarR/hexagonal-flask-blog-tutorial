@@ -1,4 +1,0 @@
-dependency-injector
-flask
-pytest-flask
-pytest-cov

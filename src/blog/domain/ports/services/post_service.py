@@ -1,8 +1,11 @@
-from typing import Optional, Any
+from typing import Any, Optional
+
 from flask import abort, g
-from src.blog.domain.ports import CreatePostInputDto, UpdatePostInputDto, DeletePostInputDto
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
+
 from src.blog.domain.model.post import Post, post_factory
+from src.blog.domain.ports import (CreatePostInputDto, DeletePostInputDto,
+                                   UpdatePostInputDto)
+from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class BlogDBOperationError(Exception):
@@ -10,7 +13,6 @@ class BlogDBOperationError(Exception):
 
 
 class PostService:
-
     def __init__(self, post_repo: RepositoryInterface) -> None:
         self.post_repo = post_repo
 
@@ -32,7 +34,7 @@ class PostService:
             raise BlogDBOperationError(err) from err
 
     def delete(self, post: DeletePostInputDto):
-        data = (post.id, )
+        data = (post.id,)
         query = "DELETE FROM post WHERE id = ?"
         try:
             return self.post_repo.execute(query, data, commit=True)
@@ -60,7 +62,7 @@ class PostService:
         if post is None:
             abort(404, f"Post id {id} doesn't exist.")
 
-        if check_author and post['author_id'] != g.user['id']:
+        if check_author and post["author_id"] != g.user["id"]:
             abort(403)
 
         return post

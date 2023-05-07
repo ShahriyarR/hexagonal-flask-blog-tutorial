@@ -1,9 +1,10 @@
 from flask import Flask
 
-from src.blog.configurator.containers import Container
 from src.blog.configurator.config import init_app
-from .blueprints.blog import blueprint as blog_blueprint
+from src.blog.configurator.containers import Container
+
 from .blueprints.auth import blueprint as user_blueprint
+from .blueprints.blog import blueprint as blog_blueprint
 
 
 def create_app() -> Flask:

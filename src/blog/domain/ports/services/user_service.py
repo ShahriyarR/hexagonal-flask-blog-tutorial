@@ -1,6 +1,7 @@
-from typing import Optional, Any
+from typing import Any, Optional
+
+from src.blog.domain.model import User, user_factory
 from src.blog.domain.ports import RegisterUserInputDto
-from src.blog.domain.model import user_factory, User
 from src.blog.domain.ports.repositories.repository import RepositoryInterface
 
 
@@ -9,7 +10,6 @@ class UserDBOperationError(Exception):
 
 
 class UserService:
-
     def __init__(self, user_repo: RepositoryInterface) -> None:
         self.user_repo = user_repo
 
@@ -24,7 +24,7 @@ class UserService:
         return user
 
     def get_user_by_user_name(self, user_name: str) -> Optional[tuple[Any, ...]]:
-        data = (user_name, )
+        data = (user_name,)
         query = "SELECT * FROM user WHERE username = ?"
         try:
             return self.user_repo.execute(query, data).fetchone()
@@ -38,4 +38,3 @@ class UserService:
             return self.user_repo.execute(query, data).fetchone()
         except Exception as err:
             raise UserDBOperationError() from err
-
