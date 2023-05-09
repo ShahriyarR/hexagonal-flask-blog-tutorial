@@ -1,16 +1,22 @@
 from dependency_injector import containers, providers
 
-from src.blog.configurator.config import get_db
-from src.blog.configurator.post_containers import PostContainer
-from src.blog.configurator.user_containers import UserContainer
+from blog.adapters.repositories.post import PostRepository
+from blog.adapters.repositories.user import UserRepository
+from blog.adapters.services.post import PostService
+from blog.adapters.services.user import UserService
+from blog.configurator.config import get_db
 
 
 class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
-        packages=["src.adapters.app.blueprints"]
+        packages=["blog.adapters.entrypoints.app.blueprints"]
     )
     db_connection = get_db()
 
-    user_package = providers.Container(UserContainer, db_conn=db_connection)
+    post_repository = providers.Singleton(PostRepository, db_conn=db_connection)
 
-    blog_package = providers.Container(PostContainer, db_conn=db_connection)
+    post_service = providers.Factory(PostService, post_repo=post_repository)
+
+    user_repository = providers.Singleton(UserRepository, db_conn=db_connection)
+
+    user_service = providers.Factory(UserService, user_repo=user_repository)
