@@ -14,13 +14,13 @@ def register_user_factory(user_name: str, password: str) -> RegisterUserInputDto
 
 
 class CreatePostInputDto(BaseModel):
+    author_id: int
     title: str
     body: str
-    author_id: int
 
 
-def create_post_factory(title: str, body: str, author_id: int) -> CreatePostInputDto:
-    return CreatePostInputDto(title=title, body=body, author_id=author_id)
+def create_post_factory(author_id: int, title: str, body: str, ) -> CreatePostInputDto:
+    return CreatePostInputDto(author_id=author_id, title=title, body=body)
 
 
 class UpdatePostInputDto(BaseModel):
