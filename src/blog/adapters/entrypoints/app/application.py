@@ -1,15 +1,14 @@
 from flask import Flask
 
-from src.blog.configurator.config import init_app
-from src.blog.configurator.containers import Container
-
-from .blueprints.auth import blueprint as user_blueprint
-from .blueprints.blog import blueprint as blog_blueprint
+from blog.adapters.entrypoints.app.blueprints.auth import blueprint as user_blueprint
+from blog.adapters.entrypoints.app.blueprints.blog import blueprint as blog_blueprint
+from blog.configurator.config import init_app
+from blog.configurator.containers import Container
 
 
 def create_app() -> Flask:
-    container = Container()
     app = Flask(__name__)
+    container = Container()
     app.secret_key = "Awesome Secret Key which is going to be hacked."
     app.container = container
     with app.app_context():

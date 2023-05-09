@@ -1,7 +1,7 @@
 from sqlite3 import Connection
 from typing import Any, Callable
 
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class PostRepository(RepositoryInterface):

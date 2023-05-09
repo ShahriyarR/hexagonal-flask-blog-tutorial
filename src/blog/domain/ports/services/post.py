@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from src.blog.domain.model import Post
-from src.blog.domain.model.schemas import (
+from blog.domain.model.model import Post
+from blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
     UpdatePostInputDto,
 )
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class PostServiceInterface(ABC):

@@ -13,9 +13,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
-from src.blog.adapters.services.user import UserDBOperationError, UserService
-from src.blog.configurator.containers import Container
-from src.blog.domain.model.schemas import register_user_factory
+from blog.adapters.services.user import UserDBOperationError, UserService
+from blog.domain.model.schemas import register_user_factory
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -36,7 +35,7 @@ def login_required(view):
 @blueprint.before_app_request
 @inject
 def load_logged_in_user(
-    user_service: UserService = Provide[Container.user_package.user_service],
+    user_service: UserService = Provide["user_service"],
 ):
     """If a user id is stored in the session, load the user object from
     the database into ``g.user``."""
@@ -50,7 +49,7 @@ def load_logged_in_user(
 
 @blueprint.route("/register", methods=("GET", "POST"))
 @inject
-def register(user_service: UserService = Provide[Container.user_package.user_service]):
+def register(user_service: UserService = Provide["user_service"]):
     if request.method == "POST":
         user_name = request.form["username"]
         password = request.form["password"]
@@ -75,7 +74,7 @@ def register(user_service: UserService = Provide[Container.user_package.user_ser
 
 @blueprint.route("/login", methods=("GET", "POST"))
 @inject
-def login(user_service: UserService = Provide[Container.user_package.user_service]):
+def login(user_service: UserService = Provide["user_service"]):
     if request.method == "POST":
         user_name = request.form["username"]
         password = request.form["password"]

@@ -1,13 +1,14 @@
 PYTHON=./.venv/bin/python
 
-PHONY = help install install-dev build test test-cov format lint type-check secure run
+PHONY = help install install-dev init-db run build test test-cov format lint type-check secure
 
 
 help:
 	@echo "---------------HELP-----------------"
 	@echo "To install the project type -> make install"
 	@echo "To install the project for development type -> make install-dev"
-	@echo "To build the application"
+	@echo "To build the application -> make build"
+	@echo "Init the test database -> make init-db"
 	@echo "To run application -> make run"
 	@echo "To test the project type [exclude slow tests] -> make test"
 	@echo "To test with coverage [all tests] -> make test-cov"
@@ -27,6 +28,12 @@ build:
 	${PYTHON} -m flit build --format wheel
 	${PYTHON} -m pip install dist/*.whl
 	${PYTHON} -c 'import blog; print(blog.__version__)'
+
+init-db:
+	${PYTHON} -m flask --app src.blog.adapters.entrypoints.app.application init-db
+
+run:
+	${PYTHON} -m flask --app src.blog.adapters.entrypoints.app.application --debug run
 
 test:
 	TEST_RUN="TRUE" ${PYTHON} -m pytest -svvv -m "not slow and not integration" tests

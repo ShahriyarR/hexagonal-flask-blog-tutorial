@@ -2,15 +2,15 @@ from typing import Any, Optional
 
 from flask import abort, g
 
-from src.blog.domain.model.model import Post, post_factory
-from src.blog.domain.model.schemas import (
+from blog.domain.model.model import Post, post_factory
+from blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
     UpdatePostInputDto,
 )
-from src.blog.domain.ports.repositories.exceptions import BlogDBOperationError
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
-from src.blog.domain.ports.services.post import PostServiceInterface
+from blog.domain.ports.repositories.exceptions import BlogDBOperationError
+from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.services.post import PostServiceInterface
 
 
 class PostService(PostServiceInterface):

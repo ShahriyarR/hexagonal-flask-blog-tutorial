@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from src.blog.domain.model import User
-from src.blog.domain.model.schemas import RegisterUserInputDto
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.model.model import User
+from blog.domain.model.schemas import RegisterUserInputDto
+from blog.domain.ports.repositories.repository import RepositoryInterface
 
 
 class UserServiceInterface(ABC):

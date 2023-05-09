@@ -1,10 +1,10 @@
 from typing import Any, Optional
 
-from src.blog.domain.model import User, user_factory
-from src.blog.domain.model.schemas import RegisterUserInputDto
-from src.blog.domain.ports.repositories.exceptions import UserDBOperationError
-from src.blog.domain.ports.repositories.repository import RepositoryInterface
-from src.blog.domain.ports.services.user import UserServiceInterface
+from blog.domain.model.model import User, user_factory
+from blog.domain.model.schemas import RegisterUserInputDto
+from blog.domain.ports.repositories.exceptions import UserDBOperationError
+from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.services.user import UserServiceInterface
 
 
 class UserService(UserServiceInterface):
