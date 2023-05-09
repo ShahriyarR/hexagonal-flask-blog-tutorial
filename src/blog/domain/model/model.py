@@ -11,6 +11,12 @@ class Post:
     body: str
     created: datetime
 
+    def __eq__(self, other):
+        return self.author_id == other.author_id and self.title == other.title
+
+    def __hash__(self):
+        return hash(self.author_id)
+
 
 def post_factory(
     author_id: int, title: str, body: str, created: datetime = None
