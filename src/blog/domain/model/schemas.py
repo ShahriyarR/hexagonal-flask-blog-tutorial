@@ -18,8 +18,15 @@ class CreatePostInputDto(BaseModel):
     title: str
     body: str
 
+    # Possible place for custom validators, or it can be delegated to factory
 
-def create_post_factory(author_id: int, title: str, body: str, ) -> CreatePostInputDto:
+
+def create_post_dto_factory(
+    author_id: int,
+    title: str,
+    body: str,
+) -> CreatePostInputDto:
+    # Ideally we should have either custom validators here or in Pydantic side
     return CreatePostInputDto(author_id=author_id, title=title, body=body)
 
 
