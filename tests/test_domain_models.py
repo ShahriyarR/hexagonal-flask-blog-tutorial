@@ -3,7 +3,7 @@ import datetime
 import pytest
 from pydantic import ValidationError
 
-from blog.domain.model.model import post_factory
+from blog.domain.model.model import User, post_factory, user_factory
 from blog.domain.model.schemas import (
     create_post_dto_factory,
     delete_post_factory,
@@ -92,3 +92,9 @@ def test_if_delete_post_dto_is_created():
 def test_if_delete_post_dto_is_created_with_wrong_type():
     with pytest.raises(ValidationError):
         _ = delete_post_factory(id_="")
+
+
+def test_if_can_create_user_with_user_factory():
+    user = user_factory("Shako", "AzePUG")
+    assert user.id_
+    assert isinstance(user, User)
