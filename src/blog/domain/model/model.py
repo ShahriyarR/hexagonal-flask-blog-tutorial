@@ -12,10 +12,17 @@ class Post:
     created: datetime
 
     def __eq__(self, other):
+        if not isinstance(other, Post):
+            return False
         return self.author_id == other.author_id and self.title == other.title
 
     def __hash__(self):
+        if not isinstance(self.author_id, int):
+            raise TypeError("author id should be integer")
         return hash(self.author_id)
+
+    def __str__(self):
+        return f"Post('{self.title}')"
 
 
 def post_factory(
