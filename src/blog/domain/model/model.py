@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 
 @dataclass
@@ -25,13 +25,22 @@ class Post:
         return f"Post('{self.title}')"
 
 
-def post_factory(
-    author_id: int, title: str, body: str, created: datetime = None
-) -> Post:
+def post_factory(author_id: int, title: str, body: str, created: datetime) -> Post:
     # data validation should happen here
-    _created = created or datetime.now()
+    if not isinstance(created, datetime):
+        raise TypeError("created should be a datetime type")
+    if not isinstance(author_id, int):
+        raise TypeError("author id should be integer")
+    if not body:
+        raise ValueError("we do not accept empty body")
+    if not title:
+        raise ValueError("we do not accept empty title")
+
+    uuid_ = uuid4()
+    if not isinstance(uuid_, UUID):
+        raise ValueError("failed to generate uuid")
     return Post(
-        id_=str(uuid4()), author_id=author_id, title=title, body=body, created=_created
+        id_=str(uuid_), author_id=author_id, title=title, body=body, created=created
     )
 
 

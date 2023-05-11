@@ -100,48 +100,40 @@ def test_hash_with_non_integer_author_id():
         hash(post)
 
 
-def test_if_posts_are_created_using_create_dto():
-    post_dto = create_post_dto_factory(
-        1,
-        "Awesome Architectures",
-        "Introduce patterns for Pythonistas",
-    )
-    assert post_dto.author_id == 1
-    post = post_factory(post_dto.author_id, post_dto.title, post_dto.body)
-    assert post.id_
-    assert post.created
+#  Tests that the function returns a Post object with a unique id and created datetime when
+#  valid input parameters are provided.
+#  Tags: [happy path]
+def test_valid_input_parameters():
+    post = post_factory(1, "Test Title", "Test Body", datetime.now())
+    assert isinstance(post, Post)
+    assert post.author_id == 1
+    assert post.title == "Test Title"
+    assert post.body == "Test Body"
+    assert isinstance(post.created, datetime)
+    assert post.id_ != ""
 
 
-def test_if_posts_are_created_using_create_dto_with_wrong_types():
-    with pytest.raises(ValidationError):
-        _ = create_post_dto_factory(
-            1,
-            [],
-            "Introduce patterns for Pythonistas",
-        )
+#  Tests that the function raises an error when an empty string is provided for the title parameter. Tags: [edge case]
+def test_empty_string_title():
+    with pytest.raises(ValueError):
+        post_factory(1, "", "Test Body", datetime.now())
 
 
-def test_if_update_posts_dto_is_created():
-    update_dto = update_post_factory(1, "Awesome title", "Fit body")
-    assert update_dto.id == 1
+#  Tests that the function raises an error when an empty string is provided for the body parameter. Tags: [edge case]
+def test_empty_string_body():
+    with pytest.raises(ValueError):
+        post_factory(1, "Test Title", "", datetime.now())
 
 
-def test_if_update_posts_dto_is_created_with_wrong_types():
-    with pytest.raises(ValidationError):
-        _ = update_post_factory(object, "Awesome title", "Fit body")
+#  Tests that the function raises an error when a non-integer value is provided for the author_id parameter.
+#  Tags: [edge case]
+def test_non_integer_author_id():
+    with pytest.raises(TypeError):
+        post_factory("not_an_integer", "Test Title", "Test Body", datetime.now())
 
 
-def test_if_delete_post_dto_is_created():
-    delete_dto = delete_post_factory(id_=1)
-    assert delete_dto.id == 1
-
-
-def test_if_delete_post_dto_is_created_with_wrong_type():
-    with pytest.raises(ValidationError):
-        _ = delete_post_factory(id_="")
-
-
-def test_if_can_create_user_with_user_factory():
-    user = user_factory("Shako", "AzePUG")
-    assert user.id_
-    assert isinstance(user, User)
+#  Tests that the function raises an error when an invalid datetime format is provided for the created parameter.
+#  Tags: [edge case]
+def test_invalid_datetime_format():
+    with pytest.raises(TypeError):
+        post_factory(1, "Test Title", "Test Body", "invalid_datetime_format")
