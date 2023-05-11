@@ -1,56 +1,103 @@
-import datetime
+from datetime import datetime
 
 import pytest
 from pydantic import ValidationError
 
-from blog.domain.model.model import User, post_factory, user_factory
+from blog.domain.model.model import Post, User, post_factory, user_factory
 from blog.domain.model.schemas import (
+    RegisterUserInputDto,
     create_post_dto_factory,
     delete_post_factory,
+    register_user_factory,
     update_post_factory,
 )
 
 
-def test_if_can_create_with_post_factory():
-    post = post_factory(
-        1,
-        "Awesome Architectures",
-        "Introduce patterns for Pythonistas",
-        created=datetime.datetime.now(),
+#  Tests that a Post object can be created with valid parameters. Tags: [happy path]
+def test_create_post_valid_parameters():
+    post = Post(
+        id_="1",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
     )
-    assert post.author_id == 1
+    assert isinstance(post, Post)
 
 
-def test_if_two_posts_are_equal():
-    post_1 = post_factory(
-        1,
-        "Awesome Architectures",
-        "Introduce patterns for Pythonistas",
-        created=datetime.datetime.now(),
+#  Tests that two Post objects with the same author_id and title are equal. Tags: [happy path]
+def test_compare_same_author_id_and_title():
+    post1 = Post(
+        id_="1",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
     )
-    post_2 = post_factory(
-        1,
-        "Awesome Architectures",
-        "Introduce patterns for Pythonistas",
-        created=datetime.datetime.now(),
+    post2 = Post(
+        id_="2",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
     )
-    assert post_1 == post_2
+    assert post1 == post2
 
 
-def test_if_two_posts_are_not_equal():
-    post_1 = post_factory(
-        1,
-        "Awesome Architectures",
-        "Introduce patterns for Pythonistas",
-        created=datetime.datetime.now(),
+#  Tests that two Post objects with different author_id and title are not equal. Tags: [edge case]
+def test_compare_different_author_id_and_title():
+    post1 = Post(
+        id_="1",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
     )
-    post_2 = post_factory(
-        1,
-        "Architecture",
-        "Introduce patterns for Pythonistas",
-        created=datetime.datetime.now(),
+    post2 = Post(
+        id_="2",
+        author_id=456,
+        title="Different Title",
+        body="Different Body",
+        created=datetime.now(),
     )
-    assert post_1 != post_2
+    assert post1 != post2
+
+
+#  Tests that a Post object cannot be compared with a non-Post object. Tags: [edge case]
+def test_compare_with_non_post_object():
+    post = Post(
+        id_="1",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
+    )
+    assert post != "not a post object"
+
+
+#  Tests the string representation of a Post object. Tags: [general behavior]
+def test_string_representation():
+    post = Post(
+        id_="1",
+        author_id=123,
+        title="Test Title",
+        body="Test Body",
+        created=datetime.now(),
+    )
+    assert str(post) == "Post('Test Title')"
+
+
+#  Tests that a Post object cannot be hashed with a non-integer author_id. Tags: [edge case]
+def test_hash_with_non_integer_author_id():
+    with pytest.raises(TypeError):
+        post = Post(
+            id_="1",
+            author_id="not an integer",
+            title="Test Title",
+            body="Test Body",
+            created=datetime.now(),
+        )
+        hash(post)
 
 
 def test_if_posts_are_created_using_create_dto():
