@@ -25,7 +25,9 @@ class Post:
         return f"Post('{self.title}')"
 
 
-def post_factory(author_id: int, title: str, body: str, created: datetime) -> Post:
+def post_factory(
+    uuid: UUID, author_id: int, title: str, body: str, created: datetime
+) -> Post:
     # data validation should happen here
     if not isinstance(created, datetime):
         raise TypeError("created should be a datetime type")
@@ -35,12 +37,11 @@ def post_factory(author_id: int, title: str, body: str, created: datetime) -> Po
         raise ValueError("we do not accept empty body")
     if not title:
         raise ValueError("we do not accept empty title")
-
-    uuid_ = uuid4()
-    if not isinstance(uuid_, UUID):
+    if not isinstance(uuid, UUID):
         raise ValueError("failed to generate uuid")
+
     return Post(
-        id_=str(uuid_), author_id=author_id, title=title, body=body, created=created
+        id_=str(uuid), author_id=author_id, title=title, body=body, created=created
     )
 
 
