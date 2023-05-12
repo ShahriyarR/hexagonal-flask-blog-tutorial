@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 import pytest
 from pydantic import ValidationError
@@ -104,7 +105,7 @@ def test_hash_with_non_integer_author_id():
 #  valid input parameters are provided.
 #  Tags: [happy path]
 def test_valid_input_parameters():
-    post = post_factory(1, "Test Title", "Test Body", datetime.now())
+    post = post_factory(uuid4(), 1, "Test Title", "Test Body", datetime.now())
     assert isinstance(post, Post)
     assert post.author_id == 1
     assert post.title == "Test Title"
@@ -116,24 +117,24 @@ def test_valid_input_parameters():
 #  Tests that the function raises an error when an empty string is provided for the title parameter. Tags: [edge case]
 def test_empty_string_title():
     with pytest.raises(ValueError):
-        post_factory(1, "", "Test Body", datetime.now())
+        post_factory(uuid4(), 1, "", "Test Body", datetime.now())
 
 
 #  Tests that the function raises an error when an empty string is provided for the body parameter. Tags: [edge case]
 def test_empty_string_body():
     with pytest.raises(ValueError):
-        post_factory(1, "Test Title", "", datetime.now())
+        post_factory(uuid4(), 1, "Test Title", "", datetime.now())
 
 
 #  Tests that the function raises an error when a non-integer value is provided for the author_id parameter.
 #  Tags: [edge case]
 def test_non_integer_author_id():
     with pytest.raises(TypeError):
-        post_factory("not_an_integer", "Test Title", "Test Body", datetime.now())
+        post_factory(uuid4(), "not_an_integer", "Test Title", "Test Body", datetime.now())
 
 
 #  Tests that the function raises an error when an invalid datetime format is provided for the created parameter.
 #  Tags: [edge case]
 def test_invalid_datetime_format():
     with pytest.raises(TypeError):
-        post_factory(1, "Test Title", "Test Body", "invalid_datetime_format")
+        post_factory(uuid4(), 1, "Test Title", "Test Body", "invalid_datetime_format")
