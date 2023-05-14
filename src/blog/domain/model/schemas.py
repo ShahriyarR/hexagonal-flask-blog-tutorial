@@ -1,7 +1,7 @@
 import datetime
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, PositiveInt, UUID4
 from pydantic.class_validators import validator
 from pydantic.fields import Field
 from werkzeug.security import generate_password_hash
@@ -19,7 +19,7 @@ def register_user_factory(user_name: str, password: str) -> RegisterUserInputDto
 
 
 class CreatePostInputDto(BaseModel):
-    uuid: UUID = Field(default_factory=uuid4)
+    uuid: UUID4 = Field(default_factory=uuid4)
     author_id: PositiveInt
     title: str
     body: str
