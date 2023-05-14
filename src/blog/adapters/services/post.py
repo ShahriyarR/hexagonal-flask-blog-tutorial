@@ -9,13 +9,13 @@ from blog.domain.model.schemas import (
     DeletePostInputDto,
     UpdatePostInputDto,
 )
-from blog.domain.ports.repositories.repository import PostRepositoryInterface
 from blog.domain.ports.services.post import PostServiceInterface
+from blog.domain.ports.unit_of_works.post import PostUnitOfWorkInterface
 
 
 class PostService(PostServiceInterface):
-    def __init__(self, post_repo: PostRepositoryInterface) -> None:
-        self.post_repo = post_repo
+    def __init__(self, uow: PostUnitOfWorkInterface) -> None:
+        self.uow = uow
 
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
         _post = post_factory(
@@ -25,21 +25,30 @@ class PostService(PostServiceInterface):
             body=post.body,
             created=post.created,
         )
-        return self.post_repo.add(_post)
+        with self.uow:
+            self.uow.post.add(_post)
+            self.uow.commit()
 
     def _update(self, post: UpdatePostInputDto):
-        self.post_repo.update_by_uuid(post.uuid, post.title, post.body)
+        with self.uow:
+            self.uow.post.update_by_uuid(post.uuid, post.title, post.body)
+            self.uow.commit()
 
     def _delete(self, post: DeletePostInputDto):
-        self.post_repo.delete(post.uuid)
+        with self.uow:
+            self.uow.post.delete(post.uuid)
+            self.uow.commit()
 
     def _get_all_blogs(self) -> Optional[list[model.Post]]:
-        return self.post_repo.get_all()
+        with self.uow:
+            return self.uow.post.get_all()
 
     def _get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:
-        post = self.post_repo.get_by_uuid(uuid)
-        if post is None:
-            abort(404, f"Post uuid {uuid} doesn't exist.")
+        with self.uow:
+            post = self.uow.post.get_by_uuid(uuid)
+            if post is None:
+                abort(404, f"Post uuid {uuid} doesn't exist.")
 
-        if check_author and post["author_id"] != g.user["id"]:
-            abort(403)
+            if check_author and post["author_id"] != g.user["id"]:
+                abort(403)
+            return post
