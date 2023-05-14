@@ -27,8 +27,8 @@ class PostServiceInterface(ABC):
     def get_all_blogs(self) -> Optional[list[Any]]:
         return self._get_all_blogs()
 
-    def get_post_by_id(self, _id: int, check_author: bool = True) -> Post:
-        return self._get_post_by_id(_id, check_author)
+    def get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:
+        return self._get_post_by_uuid(uuid, check_author)
 
     @abstractmethod
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
@@ -47,5 +47,5 @@ class PostServiceInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _get_post_by_id(self, _id: int, check_author: bool = True) -> Post:
+    def _get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:
         raise NotImplementedError

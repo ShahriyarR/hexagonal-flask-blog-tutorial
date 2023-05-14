@@ -1,18 +1,56 @@
-from sqlite3 import Connection
-from typing import Any, Callable
+from typing import Any, Optional
 
-from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.model import model
+from blog.domain.ports.repositories.exceptions import BlogDBOperationError
+from blog.domain.ports.repositories.repository import PostRepositoryInterface
 
 
-class PostRepository(RepositoryInterface):
-    def __init__(self, db_conn: Callable[[], Connection]) -> None:
-        self.db_conn = db_conn()
+class PostRepository(PostRepositoryInterface):
+    def __init__(self, session) -> None:
+        super().__init__()
+        self.session = session
 
-    def _execute(self, query: str, data: tuple[Any, ...], commit: bool = False) -> Any:
-        result = self.db_conn.execute(query, data)
-        if commit:
-            self.commit()
-        return result
+    def _add(self, post: model.Post) -> None:
+        data = (post.uuid, post.title, post.body, post.author_id, post.created)
+        query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
+        try:
+            return self.execute(query, data)
+        except Exception as err:
+            raise BlogDBOperationError(err) from err
 
-    def _commit(self) -> None:
-        self.db_conn.commit()
+    def _update_by_uuid(self, uuid: str, title: str, body: str) -> model.Post:
+        data = (title, body, uuid)
+        query = """UPDATE post SET title = ?, body = ? WHERE id = ?"""
+        try:
+            return self.execute(query, data)
+        except Exception as err:
+            raise BlogDBOperationError(err) from err
+
+    def _delete(self, uuid: str) -> None:
+        data = (uuid,)
+        query = "DELETE FROM post WHERE id = ?"
+        try:
+            return self.execute(query, data)
+        except Exception as err:
+            raise BlogDBOperationError(err) from err
+
+    def _get_all(self) -> Optional[list[model.Post]]:
+        data = ()
+        query = """SELECT p.id, title, body, created, author_id, username
+                 FROM post p JOIN user u ON p.author_id = u.id
+                 ORDER BY created DESC"""
+        try:
+            return self.execute(query, data).fetchall()
+        except Exception as err:
+            raise BlogDBOperationError() from err
+
+    def _get_by_uuid(self, uuid: str) -> model.Post:
+        data = (uuid,)
+        query = """SELECT p.id, title, body, created, author_id, username
+                     FROM post p JOIN user u ON p.author_id = u.id
+                    WHERE p.uuid = ?"""
+
+        return self.execute(query, data).fetchone()
+
+    def _execute(self, query: str, data: tuple[Any, ...]) -> Any:
+        return self.session.execute(query, data)

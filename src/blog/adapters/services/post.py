@@ -1,20 +1,20 @@
-from typing import Any, Optional
+from typing import Optional
 
 from flask import abort, g
 
+from blog.domain.model import model
 from blog.domain.model.model import Post, post_factory
 from blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
     UpdatePostInputDto,
 )
-from blog.domain.ports.repositories.exceptions import BlogDBOperationError
-from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.repositories.repository import PostRepositoryInterface
 from blog.domain.ports.services.post import PostServiceInterface
 
 
 class PostService(PostServiceInterface):
-    def __init__(self, post_repo: RepositoryInterface) -> None:
+    def __init__(self, post_repo: PostRepositoryInterface) -> None:
         self.post_repo = post_repo
 
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
@@ -25,51 +25,21 @@ class PostService(PostServiceInterface):
             body=post.body,
             created=post.created,
         )
-        data = (_post.uuid, _post.title, _post.body, _post.author_id, _post.created)
-        query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
-        try:
-            return self.post_repo.execute(query, data, commit=True)
-        except Exception as err:
-            raise BlogDBOperationError(err) from err
+        return self.post_repo.add(_post)
 
     def _update(self, post: UpdatePostInputDto):
-        data = (post.title, post.body, post.id)
-        query = """UPDATE post SET title = ?, body = ? WHERE id = ?"""
-        try:
-            return self.post_repo.execute(query, data, commit=True)
-        except Exception as err:
-            raise BlogDBOperationError(err) from err
+        self.post_repo.update_by_uuid(post.uuid, post.title, post.body)
 
     def _delete(self, post: DeletePostInputDto):
-        data = (post.id,)
-        query = "DELETE FROM post WHERE id = ?"
-        try:
-            return self.post_repo.execute(query, data, commit=True)
-        except Exception as err:
-            raise BlogDBOperationError(err) from err
+        self.post_repo.delete(post.uuid)
 
-    def _get_all_blogs(self) -> Optional[list[Any]]:
-        data = ()
-        query = """SELECT p.id, title, body, created, author_id, username
-         FROM post p JOIN user u ON p.author_id = u.id
-         ORDER BY created DESC"""
-        try:
-            return self.post_repo.execute(query, data).fetchall()
-        except Exception as err:
-            raise BlogDBOperationError() from err
+    def _get_all_blogs(self) -> Optional[list[model.Post]]:
+        return self.post_repo.get_all()
 
-    def _get_post_by_id(self, _id: int, check_author: bool = True) -> Post:
-        data = (_id,)
-        query = """SELECT p.id, title, body, created, author_id, username
-             FROM post p JOIN user u ON p.author_id = u.id
-            WHERE p.id = ?"""
-
-        post = self.post_repo.execute(query, data).fetchone()
-
+    def _get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:
+        post = self.post_repo.get_by_uuid(uuid)
         if post is None:
-            abort(404, f"Post id {id} doesn't exist.")
+            abort(404, f"Post uuid {uuid} doesn't exist.")
 
         if check_author and post["author_id"] != g.user["id"]:
             abort(403)
-
-        return post
