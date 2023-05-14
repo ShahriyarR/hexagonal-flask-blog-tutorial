@@ -5,7 +5,7 @@ from uuid import UUID, uuid4
 
 @dataclass
 class Post:
-    id_: str
+    uuid: str
     author_id: int
     title: str
     body: str
@@ -41,7 +41,7 @@ def post_factory(
         raise ValueError("failed to generate uuid")
 
     return Post(
-        id_=str(uuid), author_id=author_id, title=title, body=body, created=created
+        uuid=str(uuid), author_id=author_id, title=title, body=body, created=created
     )
 
 
