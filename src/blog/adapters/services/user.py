@@ -13,8 +13,8 @@ class UserService(UserServiceInterface):
 
     def _create(self, user: RegisterUserInputDto) -> User:
         user = user_factory(user_name=user.user_name, password=user.password)
-        data = (user.id_, user.user_name, user.password)
-        query = "INSERT INTO user (id_, username, password) VALUES (?, ?, ?)"
+        data = (user.uuid, user.user_name, user.password)
+        query = "INSERT INTO user (uuid, username, password) VALUES (?, ?, ?)"
         try:
             self.user_repo.execute(query, data, commit=True)
         except Exception as err:
