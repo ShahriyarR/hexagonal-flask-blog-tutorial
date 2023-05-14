@@ -26,7 +26,7 @@ class Post:
 
 
 def post_factory(
-    uuid: UUID, author_id: int, title: str, body: str, created: datetime
+    uuid: str, author_id: int, title: str, body: str, created: datetime
 ) -> Post:
     # data validation should happen here
     if not isinstance(created, datetime):
@@ -37,21 +37,19 @@ def post_factory(
         raise ValueError("we do not accept empty body")
     if not title:
         raise ValueError("we do not accept empty title")
-    if not isinstance(uuid, UUID):
-        raise ValueError("failed to generate uuid")
 
     return Post(
-        uuid=str(uuid), author_id=author_id, title=title, body=body, created=created
+        uuid=uuid, author_id=author_id, title=title, body=body, created=created
     )
 
 
 @dataclass
 class User:
-    id_: str
+    uuid: str
     user_name: str
     password: str
 
 
 def user_factory(user_name: str, password: str) -> User:
     # data validation should happen here
-    return User(id_=str(uuid4()), user_name=user_name, password=password)
+    return User(uuid=str(uuid4()), user_name=user_name, password=password)
