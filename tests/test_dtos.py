@@ -1,3 +1,6 @@
+import datetime
+from uuid import uuid4
+
 import pytest
 
 from blog.domain.model.schemas import CreatePostInputDto, create_post_factory
@@ -6,7 +9,13 @@ from blog.domain.model.schemas import CreatePostInputDto, create_post_factory
 #  Tests that valid input values are accepted and returned as expected. Tags: [happy path]
 def test_valid_input_accepted():
     # Arrange
-    input_data = {"author_id": 1, "title": "Test Title", "body": "Test Body"}
+    input_data = {
+        "uuid": uuid4(),
+        "author_id": 1,
+        "title": "Test Title",
+        "body": "Test Body",
+        "created": datetime.datetime.now(),
+    }
     expected_output = CreatePostInputDto(**input_data)
 
     # Act
@@ -21,16 +30,18 @@ def test_empty_strings_are_not_accepted():
     # Arrange
     input_data = {"author_id": 1, "title": "", "body": ""}
     with pytest.raises(ValueError):
-        expected_output = CreatePostInputDto(**input_data)
+        _ = CreatePostInputDto(**input_data)
 
 
 #  Tests that large integer values for author_id are accepted. Tags: [edge case]
 def test_large_integer_accepted():
     # Arrange
     input_data = {
+        "uuid": uuid4(),
         "author_id": 999999999999999999999999999999999999999999999999999999999999999999999999,
         "title": "Test Title",
         "body": "Test Body",
+        "created": datetime.datetime.now(),
     }
     expected_output = CreatePostInputDto(**input_data)
 
@@ -55,9 +66,11 @@ def test_invalid_input_raises_error():
 def test_unicode_characters_accepted():
     # Arrange
     input_data = {
+        "uuid": uuid4(),
         "author_id": 1,
         "title": "Test Title with Unicode: こんにちは",
         "body": "Test Body with Unicode: 你好",
+        "created": datetime.datetime.now(),
     }
     expected_output = CreatePostInputDto(**input_data)
 

@@ -9,7 +9,7 @@ from blog.domain.model.model import Post, post_factory
 #  Tests that a Post object can be created with valid parameters. Tags: [happy path]
 def test_create_post_valid_parameters():
     post = Post(
-        id_="1",
+        uuid="1",
         author_id=123,
         title="Test Title",
         body="Test Body",
@@ -21,14 +21,14 @@ def test_create_post_valid_parameters():
 #  Tests that two Post objects with the same author_id and title are equal. Tags: [happy path]
 def test_compare_same_author_id_and_title():
     post1 = Post(
-        id_="1",
+        uuid="1",
         author_id=123,
         title="Test Title",
         body="Test Body",
         created=datetime.now(),
     )
     post2 = Post(
-        id_="2",
+        uuid="2",
         author_id=123,
         title="Test Title",
         body="Test Body",
@@ -40,14 +40,14 @@ def test_compare_same_author_id_and_title():
 #  Tests that two Post objects with different author_id and title are not equal. Tags: [edge case]
 def test_compare_different_author_id_and_title():
     post1 = Post(
-        id_="1",
+        uuid="1",
         author_id=123,
         title="Test Title",
         body="Test Body",
         created=datetime.now(),
     )
     post2 = Post(
-        id_="2",
+        uuid="2",
         author_id=456,
         title="Different Title",
         body="Different Body",
@@ -59,7 +59,7 @@ def test_compare_different_author_id_and_title():
 #  Tests that a Post object cannot be compared with a non-Post object. Tags: [edge case]
 def test_compare_with_non_post_object():
     post = Post(
-        id_="1",
+        uuid="1",
         author_id=123,
         title="Test Title",
         body="Test Body",
@@ -71,7 +71,7 @@ def test_compare_with_non_post_object():
 #  Tests the string representation of a Post object. Tags: [general behavior]
 def test_string_representation():
     post = Post(
-        id_="1",
+        uuid="1",
         author_id=123,
         title="Test Title",
         body="Test Body",
@@ -103,7 +103,7 @@ def test_valid_input_parameters():
     assert post.title == "Test Title"
     assert post.body == "Test Body"
     assert isinstance(post.created, datetime)
-    assert post.id_ != ""
+    assert post.uuid != ""
 
 
 #  Tests that the function raises an error when an empty string is provided for the title parameter. Tags: [edge case]
