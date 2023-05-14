@@ -6,7 +6,7 @@ from blog.domain.model.model import Post, post_factory
 from blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
-    UpdatePostInputDto,
+    UpdatePostInputDto, create_post_factory,
 )
 from blog.domain.ports.repositories.exceptions import BlogDBOperationError
 from blog.domain.ports.repositories.repository import RepositoryInterface
@@ -18,9 +18,9 @@ class PostService(PostServiceInterface):
         self.post_repo = post_repo
 
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
-        _post = post_factory(author_id=post.author_id, title=post.title, body=post.body)
-        data = (_post.id_, _post.title, _post.body, _post.author_id)
-        query = "INSERT INTO post (id_, title, body, author_id) VALUES (?, ?, ?, ?)"
+        _post = create_post_factory(author_id=post.author_id, title=post.title, body=post.body)
+        data = (_post.uuid, _post.title, _post.body, _post.author_id)
+        query = "INSERT INTO post (uuid, title, body, author_id) VALUES (?, ?, ?, ?)"
         try:
             return self.post_repo.execute(query, data, commit=True)
         except Exception as err:

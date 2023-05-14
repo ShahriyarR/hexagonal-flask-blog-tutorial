@@ -1,5 +1,9 @@
+import datetime
+from uuid import UUID, uuid4
+
 from pydantic import BaseModel, PositiveInt
 from pydantic.class_validators import validator
+from pydantic.fields import Field
 from werkzeug.security import generate_password_hash
 
 
@@ -15,9 +19,11 @@ def register_user_factory(user_name: str, password: str) -> RegisterUserInputDto
 
 
 class CreatePostInputDto(BaseModel):
+    uuid: UUID = Field(default_factory=uuid4)
     author_id: PositiveInt
     title: str
     body: str
+    created: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
     # Possible place for custom validators, or it can be delegated to factory
 
@@ -38,12 +44,6 @@ class CreatePostInputDto(BaseModel):
         if not v:
             raise ValueError("Title and body should not be empty or None")
         return v
-
-    # @validator("body")
-    # def body_should_not_be_empty(cls, v):
-    #     if not v:
-    #         raise ValueError("Body should not be empty or None")
-    #     return v
 
 
 def create_post_factory(title: str, body: str, author_id: int) -> CreatePostInputDto:
