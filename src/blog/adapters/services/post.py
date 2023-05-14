@@ -20,7 +20,6 @@ class PostService(PostServiceInterface):
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
         _post = post_factory(uuid=str(post.uuid), author_id=post.author_id, title=post.title, body=post.body, created=post.created)
         data = (_post.uuid, _post.title, _post.body, _post.author_id, _post.created)
-        print(data)
         query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
         try:
             return self.post_repo.execute(query, data, commit=True)
