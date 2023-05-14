@@ -51,18 +51,18 @@ def create_post_factory(title: str, body: str, author_id: int) -> CreatePostInpu
 
 
 class UpdatePostInputDto(BaseModel):
-    id: int
+    uuid: str
     title: str
     body: str
 
 
-def update_post_factory(id_: int, title: str, body: str) -> UpdatePostInputDto:
-    return UpdatePostInputDto(id=id_, title=title, body=body)
+def update_post_factory(uuid: str, title: str, body: str) -> UpdatePostInputDto:
+    return UpdatePostInputDto(uuid=uuid, title=title, body=body)
 
 
 class DeletePostInputDto(BaseModel):
-    id: int
+    uuid: str
 
 
-def delete_post_factory(id_: int) -> DeletePostInputDto:
-    return DeletePostInputDto(id=id_)
+def delete_post_factory(uuid: str) -> DeletePostInputDto:
+    return DeletePostInputDto(uuid=uuid)
