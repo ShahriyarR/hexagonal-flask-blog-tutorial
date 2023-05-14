@@ -7,12 +7,12 @@ from blog.domain.model.schemas import (
     DeletePostInputDto,
     UpdatePostInputDto,
 )
-from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.repositories.repository import PostRepositoryInterface
 
 
 class PostServiceInterface(ABC):
     @abstractmethod
-    def __init__(self, post_repo: RepositoryInterface) -> None:
+    def __init__(self, post_repo: PostRepositoryInterface) -> None:
         raise NotImplementedError
 
     def create(self, post: CreatePostInputDto) -> Optional[Post]:
