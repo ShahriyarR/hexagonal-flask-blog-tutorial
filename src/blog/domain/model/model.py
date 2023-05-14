@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from uuid import UUID, uuid4
 
 
 @dataclass
@@ -38,9 +37,7 @@ def post_factory(
     if not title:
         raise ValueError("we do not accept empty title")
 
-    return Post(
-        uuid=uuid, author_id=author_id, title=title, body=body, created=created
-    )
+    return Post(uuid=uuid, author_id=author_id, title=title, body=body, created=created)
 
 
 @dataclass
@@ -49,7 +46,33 @@ class User:
     user_name: str
     password: str
 
+    def __eq__(self, other):
+        if not isinstance(other, User):
+            return False
+        return self.user_name == other.user_name
 
-def user_factory(user_name: str, password: str) -> User:
+    def __hash__(self):
+        if isinstance(self.uuid, str) and self.uuid:
+            return hash(self.uuid)
+        else:
+            raise TypeError("uuid must not be empty or other type than str")
+
+    def __str__(self):
+        return f"User('{self.user_name}')"
+
+
+def user_factory(uuid: str, user_name: str, password: str) -> User:
     # data validation should happen here
-    return User(uuid=str(uuid4()), user_name=user_name, password=password)
+    if len(uuid) > 16:
+        raise ValueError("Failed to verify if the string is valid UUID4")
+    if len(user_name) > 8:
+        raise ValueError("User name should be maximum of 8 characters length")
+    if len(password) > 5:
+        raise ValueError("Password should be maximum of 5 characters length")
+
+    if not uuid or not user_name or not password:
+        raise ValueError(
+            "Mandatory fields of uuid, user_name and password can not be empty or None"
+        )
+
+    return User(uuid=uuid, user_name=user_name, password=password)
