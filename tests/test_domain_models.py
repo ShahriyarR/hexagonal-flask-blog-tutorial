@@ -2,16 +2,8 @@ from datetime import datetime
 from uuid import uuid4
 
 import pytest
-from pydantic import ValidationError
 
-from blog.domain.model.model import Post, User, post_factory, user_factory
-from blog.domain.model.schemas import (
-    RegisterUserInputDto,
-    create_post_dto_factory,
-    delete_post_factory,
-    register_user_factory,
-    update_post_factory,
-)
+from blog.domain.model.model import Post, post_factory
 
 
 #  Tests that a Post object can be created with valid parameters. Tags: [happy path]
@@ -130,7 +122,9 @@ def test_empty_string_body():
 #  Tags: [edge case]
 def test_non_integer_author_id():
     with pytest.raises(TypeError):
-        post_factory(uuid4(), "not_an_integer", "Test Title", "Test Body", datetime.now())
+        post_factory(
+            uuid4(), "not_an_integer", "Test Title", "Test Body", datetime.now()
+        )
 
 
 #  Tests that the function raises an error when an invalid datetime format is provided for the created parameter.
