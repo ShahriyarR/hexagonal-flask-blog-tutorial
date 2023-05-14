@@ -25,9 +25,11 @@ class PostService(PostServiceInterface):
             body=post.body,
             created=post.created,
         )
+
         with self.uow:
             self.uow.post.add(_post)
             self.uow.commit()
+
 
     def _update(self, post: UpdatePostInputDto):
         with self.uow:
