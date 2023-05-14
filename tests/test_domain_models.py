@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from blog.domain.model.model import Post, post_factory
+from blog.domain.model.model import Post, User, post_factory, user_factory
 
 
 #  Tests that a Post object can be created with valid parameters. Tags: [happy path]
@@ -132,3 +132,140 @@ def test_non_integer_author_id():
 def test_invalid_datetime_format():
     with pytest.raises(TypeError):
         post_factory(uuid4(), 1, "Test Title", "Test Body", "invalid_datetime_format")
+
+
+#  Tests that a User object can be created with valid uuid, user_name, and password. Tags: [happy path]
+def test_creating_user_object_with_valid_data():
+    user = User(uuid="1234", user_name="test_user", password="password")
+    assert user.uuid == "1234"
+    assert user.user_name == "test_user"
+    assert user.password == "password"
+
+
+#  Tests that two User objects with the same user_name are equal. Tags: [happy path]
+def test_comparing_two_user_objects_with_same_user_name():
+    user1 = User(uuid="1234", user_name="test_user", password="password")
+    user2 = User(uuid="5678", user_name="test_user", password="password2")
+    assert user1 == user2
+
+
+#  Tests that a User object cannot be created with an empty uuid, user_name, or password. Tags: [edge case]
+def test_creating_user_object_with_empty_data():
+    with pytest.raises(ValueError):
+        user_factory(uuid="", user_name="", password="")
+
+
+#  Tests that a User object cannot be created with a uuid, user_name, or password that exceeds the maximum length. Tags: [edge case]
+def test_creating_user_object_with_exceeding_data():
+    with pytest.raises(ValueError):
+        user_factory(
+            uuid="12345678901234567890123456789012345678901234567890123456789012345",
+            user_name="test_user",
+            password="password",
+        )
+
+
+#  Tests that hashing a User object with an empty uuid raises an error. Tags: [edge case]
+def test_hashing_user_object_with_empty_uuid():
+    user = User(uuid="", user_name="test_user", password="password")
+    with pytest.raises(TypeError):
+        hash(user)
+
+
+#  Tests that comparing a User object with a non-User object returns False. Tags: [edge case]
+def test_comparing_user_object_with_non_user_object():
+    user = User(uuid="1234", user_name="test_user", password="password")
+    assert user != "not a user object"
+
+
+#  Tests that the function returns a User instance with valid input values for uuid, user_name, and password. Tags: [happy path]
+def test_valid_input_values():
+    # Arrange
+    uuid = "1234-5678"
+    user_name = "testuser"
+    password = "pass"
+
+    # Act
+    user = user_factory(uuid, user_name, password)
+
+    # Assert
+    assert isinstance(user, User)
+    assert user.uuid == uuid
+    assert user.user_name == user_name
+    assert user.password == password
+
+
+#  Tests that the function raises a ValueError when uuid has length greater than 16. Tags: [edge case]
+def test_long_uuid():
+    # Arrange
+    uuid = "12345678901234567"
+    user_name = "testuser"
+    password = "pass"
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)
+
+
+#  Tests that the function raises a ValueError when user_name has length greater than 8. Tags: [edge case]
+def test_long_user_name():
+    # Arrange
+    uuid = "1234-5678"
+    user_name = "testusername"
+    password = "pass"
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)
+
+
+#  Tests that the __str__ method of the User class returns the expected string representation. Tags: [general behavior]
+def test_str_representation():
+    # Arrange
+    user = User(uuid="1234-5678", user_name="testuser", password="pass")
+
+    # Act
+    str_repr = str(user)
+
+    # Assert
+    assert str_repr == "User('testuser')"
+
+
+#  Tests that the function raises a ValueError when password has length greater than 5. Tags: [edge case]
+def test_long_password():
+    # Arrange
+    uuid = "1234-5678"
+    user_name = "testuser"
+    password = "password"
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)
+
+
+#  Tests that the function raises a ValueError when uuid, user_name, or password is empty or None. Tags: [edge case]
+def test_empty_values():
+    # Arrange
+    uuid = ""
+    user_name = "testuser"
+    password = "pass"
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)
+
+    uuid = "1234-5678"
+    user_name = ""
+    password = "pass"
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)
+
+    uuid = "1234-5678"
+    user_name = "testuser"
+    password = ""
+
+    # Act & Assert
+    with pytest.raises(ValueError):
+        user_factory(uuid, user_name, password)

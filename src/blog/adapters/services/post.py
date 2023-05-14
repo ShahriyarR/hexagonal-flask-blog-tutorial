@@ -6,7 +6,7 @@ from blog.domain.model.model import Post, post_factory
 from blog.domain.model.schemas import (
     CreatePostInputDto,
     DeletePostInputDto,
-    UpdatePostInputDto, create_post_factory,
+    UpdatePostInputDto,
 )
 from blog.domain.ports.repositories.exceptions import BlogDBOperationError
 from blog.domain.ports.repositories.repository import RepositoryInterface
@@ -18,7 +18,13 @@ class PostService(PostServiceInterface):
         self.post_repo = post_repo
 
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
-        _post = post_factory(uuid=str(post.uuid), author_id=post.author_id, title=post.title, body=post.body, created=post.created)
+        _post = post_factory(
+            uuid=str(post.uuid),
+            author_id=post.author_id,
+            title=post.title,
+            body=post.body,
+            created=post.created,
+        )
         data = (_post.uuid, _post.title, _post.body, _post.author_id, _post.created)
         query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
         try:

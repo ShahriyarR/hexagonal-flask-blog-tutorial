@@ -1,7 +1,7 @@
 import datetime
-from uuid import UUID, uuid4
+from uuid import uuid4
 
-from pydantic import BaseModel, PositiveInt, UUID4
+from pydantic import UUID4, BaseModel, PositiveInt
 from pydantic.class_validators import validator
 from pydantic.fields import Field
 from werkzeug.security import generate_password_hash
