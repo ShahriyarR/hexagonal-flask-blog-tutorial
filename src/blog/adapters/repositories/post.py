@@ -2,7 +2,7 @@ from typing import Any, Optional
 
 from blog.domain.model import model
 from blog.domain.ports.repositories.exceptions import BlogDBOperationError
-from blog.domain.ports.repositories.repository import PostRepositoryInterface
+from blog.domain.ports.repositories.post import PostRepositoryInterface
 
 
 class PostRepository(PostRepositoryInterface):
