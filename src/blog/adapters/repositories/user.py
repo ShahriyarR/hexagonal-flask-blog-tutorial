@@ -1,18 +1,39 @@
-from sqlite3 import Connection
-from typing import Any, Callable
+from typing import Any, Optional
+from src.blog.domain.model import model
+from blog.domain.ports.repositories.user import UserRepositoryInterface
 
-from blog.domain.ports.repositories.repository import RepositoryInterface
+from blog.domain.ports.repositories.exceptions import UserDBOperationError
 
 
-class UserRepository(RepositoryInterface):
-    def __init__(self, db_conn: Callable[[], Connection]) -> None:
-        self.db_conn = db_conn()
+class UserRepository(UserRepositoryInterface):
+    def __init__(self, session) -> None:
+        super().__init__()
+        self.session = session
 
-    def _execute(self, query: str, data: tuple[Any, ...], commit: bool = False) -> Any:
-        result = self.db_conn.execute(query, data)
-        if commit:
-            self.commit()
-        return result
+    def _execute(self, query: str, data: tuple[Any, ...]) -> Any:
+        return self.session.execute(query, data)
 
-    def _commit(self) -> None:
-        self.db_conn.commit()
+    def _add(self, user: model.User) -> None:
+        data = (user.uuid, user.user_name, user.password)
+        query = "INSERT INTO user (uuid, username, password) VALUES (?, ?, ?)"
+        try:
+            self.execute(query, data)
+        except Exception as err:
+            raise UserDBOperationError(err) from err
+
+    def _get_user_by_user_name(self, user_name: str) -> Optional[model.User]:
+        data = (user_name,)
+        query = "SELECT * FROM user WHERE username = ?"
+        try:
+            return self.execute(query, data).fetchone()
+        except Exception as err:
+            raise UserDBOperationError() from err
+
+    def _get_by_uuid(self, uuid: str) -> Optional[model.User]:
+        data = (uuid,)
+        query = "SELECT * FROM user WHERE uuid = ?"
+        try:
+            return self.execute(query, data).fetchone()
+        except Exception as err:
+            raise UserDBOperationError() from err
+
