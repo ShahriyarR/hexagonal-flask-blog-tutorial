@@ -20,7 +20,7 @@ class PostRepository(PostRepositoryInterface):
 
     def _update_by_uuid(self, uuid: str, title: str, body: str) -> model.Post:
         data = (title, body, uuid)
-        query = """UPDATE post SET title = ?, body = ? WHERE id = ?"""
+        query = """UPDATE post SET title = ?, body = ? WHERE uuid = ?"""
         try:
             return self.execute(query, data)
         except Exception as err:
@@ -28,7 +28,7 @@ class PostRepository(PostRepositoryInterface):
 
     def _delete(self, uuid: str) -> None:
         data = (uuid,)
-        query = "DELETE FROM post WHERE id = ?"
+        query = "DELETE FROM post WHERE uuid = ?"
         try:
             return self.execute(query, data)
         except Exception as err:
@@ -46,8 +46,8 @@ class PostRepository(PostRepositoryInterface):
 
     def _get_by_uuid(self, uuid: str) -> model.Post:
         data = (uuid,)
-        query = """SELECT p.id, title, body, created, author_id, username
-                     FROM post p JOIN user u ON p.author_id = u.id
+        query = """SELECT p.id, p.uuid, title, body, created, author_id, username
+                     FROM post p JOIN user u ON p.author_id = u.uuid
                     WHERE p.uuid = ?"""
 
         return self.execute(query, data).fetchone()
