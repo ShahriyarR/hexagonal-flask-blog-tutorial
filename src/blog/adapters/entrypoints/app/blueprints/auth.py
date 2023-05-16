@@ -13,8 +13,9 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
-from blog.adapters.services.user import UserDBOperationError, UserService
+from blog.adapters.services.user import UserService
 from blog.domain.model.schemas import register_user_factory
+from blog.domain.ports.repositories.exceptions import UserDBOperationError
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -44,7 +45,7 @@ def load_logged_in_user(
     if user_id is None:
         g.user = None
     else:
-        g.user = user_service.get_user_by_id(user_id)
+        g.user = user_service.get_user_by_uuid(user_id)
 
 
 @blueprint.route("/register", methods=("GET", "POST"))
@@ -63,7 +64,6 @@ def register(user_service: UserService = Provide["user_service"]):
             try:
                 user_service.create(user_)
             except UserDBOperationError as err:
-                print(err)
                 error = f"Something went wrong with database operation {err}"
             else:
                 return redirect(url_for("auth.login"))
@@ -88,7 +88,7 @@ def login(user_service: UserService = Provide["user_service"]):
 
         if not error:
             session.clear()
-            session["user_id"] = user["id"]
+            session["user_id"] = user["uuid"]
             return redirect(url_for("index"))
 
         flash(error)

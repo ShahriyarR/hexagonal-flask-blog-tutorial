@@ -5,7 +5,7 @@ from datetime import datetime
 @dataclass
 class Post:
     uuid: str
-    author_id: int
+    author_id: str
     title: str
     body: str
     created: datetime
@@ -16,8 +16,6 @@ class Post:
         return self.author_id == other.author_id and self.title == other.title
 
     def __hash__(self):
-        if not isinstance(self.author_id, int):
-            raise TypeError("author id should be integer")
         return hash(self.author_id)
 
     def __str__(self):
@@ -25,13 +23,11 @@ class Post:
 
 
 def post_factory(
-    uuid: str, author_id: int, title: str, body: str, created: datetime
+    uuid: str, author_id: str, title: str, body: str, created: datetime
 ) -> Post:
     # data validation should happen here
     if not isinstance(created, datetime):
         raise TypeError("created should be a datetime type")
-    if not isinstance(author_id, int):
-        raise TypeError("author id should be integer")
     if not body:
         raise ValueError("we do not accept empty body")
     if not title:
@@ -63,12 +59,10 @@ class User:
 
 def user_factory(uuid: str, user_name: str, password: str) -> User:
     # data validation should happen here
-    if len(uuid) > 16:
+    if len(uuid) > 36:
         raise ValueError("Failed to verify if the string is valid UUID4")
     if len(user_name) > 8:
         raise ValueError("User name should be maximum of 8 characters length")
-    if len(password) > 5:
-        raise ValueError("Password should be maximum of 5 characters length")
 
     if not uuid or not user_name or not password:
         raise ValueError(

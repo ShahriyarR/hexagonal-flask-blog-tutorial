@@ -50,6 +50,6 @@ class PostService(PostServiceInterface):
             if post is None:
                 abort(404, f"Post uuid {uuid} doesn't exist.")
 
-            if check_author and post["author_id"] != g.user["id"]:
+            if check_author and post["author_id"] != g.user["uuid"]:
                 abort(403)
             return post

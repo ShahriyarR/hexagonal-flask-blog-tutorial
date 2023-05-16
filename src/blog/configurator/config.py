@@ -7,7 +7,7 @@ from flask import current_app
 
 def get_db() -> Callable[[], sqlite3.Connection]:
     db = sqlite3.connect(
-        "hexagonal", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False
+        "hexagonal.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False
     )
 
     db.row_factory = sqlite3.Row

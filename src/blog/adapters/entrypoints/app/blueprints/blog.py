@@ -1,8 +1,9 @@
 from dependency_injector.wiring import Provide, inject
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 
+from blog.domain.ports.repositories.exceptions import BlogDBOperationError
 from src.blog.adapters.entrypoints.app.blueprints.auth import login_required
-from src.blog.adapters.services.post import BlogDBOperationError, PostService
+from src.blog.adapters.services.post import PostService
 from src.blog.domain.model.schemas import (
     create_post_factory,
     delete_post_factory,
@@ -31,7 +32,7 @@ def create(post_service: PostService = Provide["post_service"]):
         if not title:
             error = "Title is required."
 
-        post = create_post_factory(author_id=g.user["id"], title=title, body=body)
+        post = create_post_factory(author_id=g.user["uuid"], title=title, body=body)
         if not error:
             try:
                 post_service.create(post)
@@ -44,12 +45,11 @@ def create(post_service: PostService = Provide["post_service"]):
     return render_template("post/create.html")
 
 
-@blueprint.route("/<int:id>/update", methods=("GET", "POST"))
+@blueprint.route("/update/<string:uuid>", methods=("GET", "POST"))
 @login_required
 @inject
-def update(id, post_service: PostService = Provide["post_service"]):
-    post = post_service.get_post_by_id(id)
-
+def update(uuid, post_service: PostService = Provide["post_service"]):
+    post = post_service.get_post_by_uuid(uuid)
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
@@ -58,7 +58,7 @@ def update(id, post_service: PostService = Provide["post_service"]):
         if not title:
             error = "Title is required."
 
-        _post = update_post_factory(id_=id, title=title, body=body)
+        _post = update_post_factory(uuid=uuid, title=title, body=body)
 
         if not error:
             try:
@@ -72,12 +72,12 @@ def update(id, post_service: PostService = Provide["post_service"]):
     return render_template("post/update.html", post=post)
 
 
-@blueprint.route("/<int:id>/delete", methods=("POST",))
+@blueprint.route("/delete/<string:uuid>", methods=("POST",))
 @login_required
 @inject
-def delete(id, post_service: PostService = Provide["post_service"]):
-    post_service.get_post_by_id(id)
-    _post = delete_post_factory(id_=id)
+def delete(uuid, post_service: PostService = Provide["post_service"]):
+    post_service.get_post_by_uuid(uuid)
+    _post = delete_post_factory(uuid=uuid)
     try:
         post_service.delete(_post)
     except BlogDBOperationError as err:
