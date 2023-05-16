@@ -1,38 +1,26 @@
-from typing import Any, Optional
+from typing import Optional
 
 from blog.domain.model.model import User, user_factory
 from blog.domain.model.schemas import RegisterUserInputDto
-from blog.domain.ports.repositories.exceptions import UserDBOperationError
-from blog.domain.ports.repositories.repository import RepositoryInterface
 from blog.domain.ports.services.user import UserServiceInterface
+from blog.domain.ports.unit_of_works.user import UserUnitOfWorkInterface
 
 
 class UserService(UserServiceInterface):
-    def __init__(self, user_repo: RepositoryInterface) -> None:
-        self.user_repo = user_repo
+    def __init__(self, uow: UserUnitOfWorkInterface) -> None:
+        self.uow = uow
 
     def _create(self, user: RegisterUserInputDto) -> User:
         user = user_factory(user_name=user.user_name, password=user.password)
-        data = (user.uuid, user.user_name, user.password)
-        query = "INSERT INTO user (uuid, username, password) VALUES (?, ?, ?)"
-        try:
-            self.user_repo.execute(query, data, commit=True)
-        except Exception as err:
-            raise UserDBOperationError(err) from err
-        return user
+        with self.uow:
+            self.uow.user.add(user)
+            self.uow.commit()
+            return user
 
-    def _get_user_by_user_name(self, user_name: str) -> Optional[tuple[Any, ...]]:
-        data = (user_name,)
-        query = "SELECT * FROM user WHERE username = ?"
-        try:
-            return self.user_repo.execute(query, data).fetchone()
-        except Exception as err:
-            raise UserDBOperationError() from err
+    def _get_user_by_user_name(self, user_name: str) -> Optional[User]:
+        with self.uow:
+            return self.uow.user.get_user_by_user_name(user_name)
 
-    def _get_user_by_id(self, id_: int) -> Optional[tuple[Any, ...]]:
-        data = (id_,)
-        query = "SELECT * FROM user WHERE id = ?"
-        try:
-            return self.user_repo.execute(query, data).fetchone()
-        except Exception as err:
-            raise UserDBOperationError() from err
+    def _get_user_by_uuid(self, uuid: str) -> Optional[User]:
+        with self.uow:
+            return self.uow.user.get_by_uuid(uuid)

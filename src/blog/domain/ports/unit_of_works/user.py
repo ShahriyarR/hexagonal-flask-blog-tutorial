@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from blog.domain.ports.repositories.post import PostRepositoryInterface
+from blog.domain.ports.repositories.user import UserRepositoryInterface
 
 
-class PostUnitOfWorkInterface(ABC):
-    post: PostRepositoryInterface
+class UserUnitOfWorkInterface(ABC):
+    user: UserRepositoryInterface
 
-    def __enter__(self) -> "PostUnitOfWorkInterface":
+    def __enter__(self) -> "UserUnitOfWorkInterface":
         return self
 
     def __exit__(self, exc_type, exc_val, traceback):

@@ -1,8 +1,9 @@
 from typing import Any, Optional
-from src.blog.domain.model import model
-from blog.domain.ports.repositories.user import UserRepositoryInterface
 
 from blog.domain.ports.repositories.exceptions import UserDBOperationError
+from blog.domain.ports.repositories.user import UserRepositoryInterface
+from src.blog.domain.model import model
+
 
 
 class UserRepository(UserRepositoryInterface):
@@ -36,4 +37,3 @@ class UserRepository(UserRepositoryInterface):
             return self.execute(query, data).fetchone()
         except Exception as err:
             raise UserDBOperationError() from err
-

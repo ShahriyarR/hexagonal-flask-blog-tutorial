@@ -30,7 +30,6 @@ class PostService(PostServiceInterface):
             self.uow.post.add(_post)
             self.uow.commit()
 
-
     def _update(self, post: UpdatePostInputDto):
         with self.uow:
             self.uow.post.update_by_uuid(post.uuid, post.title, post.body)
