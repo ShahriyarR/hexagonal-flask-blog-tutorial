@@ -1,16 +1,16 @@
 from typing import Any, Callable
 
-from blog.adapters.repositories.post import PostRepository
-from blog.domain.ports.unit_of_works.post import PostUnitOfWorkInterface
+from blog.adapters.repositories.user import UserRepository
+from blog.domain.ports.unit_of_works.user import UserUnitOfWorkInterface
 
 
-class PostUnitOfWork(PostUnitOfWorkInterface):
+class UserUnitOfWork(UserUnitOfWorkInterface):
     def __init__(self, session_factory: Callable[[], Any]):
         self.session_factory = session_factory()
 
     def __enter__(self):
         self.session = self.session_factory()
-        self.post = PostRepository(self.session)
+        self.user = UserRepository(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):
