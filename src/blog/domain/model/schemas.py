@@ -8,19 +8,21 @@ from werkzeug.security import generate_password_hash
 
 
 class RegisterUserInputDto(BaseModel):
+    uuid: str
     user_name: str
     password: str
 
 
 def register_user_factory(user_name: str, password: str) -> RegisterUserInputDto:
+    # You can initialize uuid in factory or see below for pydantic usage
     return RegisterUserInputDto(
-        user_name=user_name, password=generate_password_hash(password)
+        uuid=str(uuid4()), user_name=user_name, password=generate_password_hash(password)
     )
 
 
 class CreatePostInputDto(BaseModel):
     uuid: UUID4 = Field(default_factory=uuid4)
-    author_id: PositiveInt
+    author_id: str
     title: str
     body: str
     created: datetime.datetime = Field(default_factory=datetime.datetime.now)

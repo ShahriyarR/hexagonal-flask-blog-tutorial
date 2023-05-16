@@ -36,8 +36,8 @@ class PostRepository(PostRepositoryInterface):
 
     def _get_all(self) -> Optional[list[model.Post]]:
         data = ()
-        query = """SELECT p.id, title, body, created, author_id, username
-                 FROM post p JOIN user u ON p.author_id = u.id
+        query = """SELECT p.id, p.uuid, title, body, created, author_id, username
+                 FROM post p JOIN user u ON p.author_id = u.uuid
                  ORDER BY created DESC"""
         try:
             return self.execute(query, data).fetchall()
