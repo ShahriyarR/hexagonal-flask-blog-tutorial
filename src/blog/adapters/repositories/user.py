@@ -5,6 +5,7 @@ from blog.domain.ports.repositories.user import UserRepositoryInterface
 from src.blog.domain.model import model
 
 
+
 class UserRepository(UserRepositoryInterface):
     def __init__(self, session) -> None:
         super().__init__()
