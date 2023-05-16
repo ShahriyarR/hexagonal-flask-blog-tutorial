@@ -11,7 +11,9 @@ class UserService(UserServiceInterface):
         self.uow = uow
 
     def _create(self, user: RegisterUserInputDto) -> User:
-        user = user_factory(user_name=user.user_name, password=user.password)
+        user = user_factory(
+            uuid=user.uuid, user_name=user.user_name, password=user.password
+        )
         with self.uow:
             self.uow.user.add(user)
             self.uow.commit()
@@ -19,7 +21,8 @@ class UserService(UserServiceInterface):
 
     def _get_user_by_user_name(self, user_name: str) -> Optional[User]:
         with self.uow:
-            return self.uow.user.get_user_by_user_name(user_name)
+            user = self.uow.user.get_user_by_user_name(user_name)
+        return user
 
     def _get_user_by_uuid(self, uuid: str) -> Optional[User]:
         with self.uow:

@@ -17,7 +17,7 @@ class UserServiceInterface(ABC):
     def get_user_by_user_name(self, user_name: str) -> Optional[User]:
         return self._get_user_by_user_name(user_name)
 
-    def get_user_by_id(self, uuid: str) -> Optional[User]:
+    def get_user_by_uuid(self, uuid: str) -> Optional[User]:
         return self._get_user_by_uuid(uuid)
 
     @abstractmethod
