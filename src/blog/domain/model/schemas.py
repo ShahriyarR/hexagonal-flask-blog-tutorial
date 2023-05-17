@@ -34,19 +34,19 @@ class CreatePostInputDto(BaseModel):
     @validator("body")
     def body_length(cls, v):
         if len(v) > 10000:
-            raise ValueError("Body length should be maximum of 10000 characters")
+            raise ValueError("Body length must be maximum of 10000 characters")
         return v
 
     @validator("title")
     def title_length(cls, v):
         if len(v) > 100:
-            raise ValueError("Title length should be maximum of 100 characters")
+            raise ValueError("Title length must be maximum of 100 characters")
         return v
 
     @validator("title", "body")
     def title_and_body_should_not_be_empty(cls, v):
         if not v:
-            raise ValueError("Title and body should not be empty or None")
+            raise ValueError("Title and body must not be empty or None")
         return v
 
 
