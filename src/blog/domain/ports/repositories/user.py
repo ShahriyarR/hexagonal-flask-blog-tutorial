@@ -14,6 +14,9 @@ class UserRepositoryInterface(ABC):
     def get_user_by_user_name(self, user_name: str) -> Optional[model.User]:
         return self._get_user_by_user_name(user_name)
 
+    def get_all(self) -> list[model.User]:
+        return self._get_all()
+
     def execute(self, query: str, data: tuple[Any, ...]) -> Any:
         return self._execute(query, data)
 
@@ -27,6 +30,10 @@ class UserRepositoryInterface(ABC):
 
     @abstractmethod
     def _get_user_by_user_name(self, user_name: str) -> Optional[model.User]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _get_all(self) -> list[model.User]:
         raise NotImplementedError
 
     @abstractmethod

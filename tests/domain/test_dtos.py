@@ -11,7 +11,7 @@ def test_valid_input_accepted():
     # Arrange
     input_data = {
         "uuid": uuid4(),
-        "author_id": 1,
+        "author_id": uuid4(),
         "title": "Test Title",
         "body": "Test Body",
         "created": datetime.datetime.now(),
@@ -28,28 +28,9 @@ def test_valid_input_accepted():
 #  Tests that empty string values for title and body are accepted. Tags: [edge case]
 def test_empty_strings_are_not_accepted():
     # Arrange
-    input_data = {"author_id": 1, "title": "", "body": ""}
+    input_data = {"author_id": uuid4(), "title": "", "body": ""}
     with pytest.raises(ValueError):
         _ = CreatePostInputDto(**input_data)
-
-
-#  Tests that large integer values for author_id are accepted. Tags: [edge case]
-def test_large_integer_accepted():
-    # Arrange
-    input_data = {
-        "uuid": uuid4(),
-        "author_id": 999999999999999999999999999999999999999999999999999999999999999999999999,
-        "title": "Test Title",
-        "body": "Test Body",
-        "created": datetime.datetime.now(),
-    }
-    expected_output = CreatePostInputDto(**input_data)
-
-    # Act
-    result = CreatePostInputDto(**input_data)
-
-    # Assert
-    assert result == expected_output
 
 
 #  Tests that BaseModel validation errors are raised for invalid input values. Tags: [general behavior]
@@ -67,7 +48,7 @@ def test_unicode_characters_accepted():
     # Arrange
     input_data = {
         "uuid": uuid4(),
-        "author_id": 1,
+        "author_id": uuid4(),
         "title": "Test Title with Unicode: こんにちは",
         "body": "Test Body with Unicode: 你好",
         "created": datetime.datetime.now(),
@@ -96,7 +77,7 @@ def test_create_post_factory_valid_input():
     # Arrange
     title = "Test Title"
     body = "Test Body"
-    author_id = 1
+    author_id = uuid4()
 
     # Act
     result = create_post_factory(title, body, author_id)
