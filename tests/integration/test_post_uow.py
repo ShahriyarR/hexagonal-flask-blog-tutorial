@@ -44,9 +44,7 @@ def test_update_by_uuid(get_fake_container, get_post_model_object):
         all_ = post_uow.post.get_all()
         old_post = all_[0]
         uuid_ = old_post["uuid"]
-        post_uow.post.update_by_uuid(
-            uuid_, "awesome_title", "new_body"
-        )
+        post_uow.post.update_by_uuid(uuid_, "awesome_title", "new_body")
         post_uow.commit()
         new_post = post_uow.post.get_by_uuid(uuid_)
         assert old_post["uuid"] == new_post["uuid"]

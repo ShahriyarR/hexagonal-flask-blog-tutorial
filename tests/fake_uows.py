@@ -1,6 +1,6 @@
 from blog.domain.ports.unit_of_works.post import PostUnitOfWorkInterface
 from blog.domain.ports.unit_of_works.user import UserUnitOfWorkInterface
-from tests.fake_repositories import FakeUserRepository, FakePostRepository
+from tests.fake_repositories import FakePostRepository, FakeUserRepository
 
 
 class FakeUserUnitOfWork(UserUnitOfWorkInterface):
