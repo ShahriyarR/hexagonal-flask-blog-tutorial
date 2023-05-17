@@ -45,4 +45,3 @@ class UserRepository(UserRepositoryInterface):
             return self.execute(query, data).fetchall()
         except Exception as err:
             raise UserDBOperationError() from err
-
