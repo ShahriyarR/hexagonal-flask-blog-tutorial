@@ -4,8 +4,17 @@ import pytest
 
 from blog.domain.model.model import post_factory, user_factory
 from blog.domain.model.schemas import create_post_factory, register_user_factory
+
+from tests.fake_container import FakeContainer, _get_db
 from tests.fake_repositories import FakePostRepository, FakeUserRepository
 from tests.fake_uows import FakePostUnitOfWork, FakeUserUnitOfWork
+
+
+def init_db():
+    db = _get_db()
+
+    with open("src/blog/adapters/entrypoints/app/schema.sql") as f:
+        db().executescript(f.read())
 
 
 @pytest.fixture(scope="module")
@@ -50,3 +59,9 @@ def get_post_model_object():
         title=post_schema.title,
         body=post_schema.body,
     )
+
+
+@pytest.fixture(scope="module")
+def get_fake_container():
+    init_db()
+    return FakeContainer()
