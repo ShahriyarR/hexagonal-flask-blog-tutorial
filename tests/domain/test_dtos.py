@@ -32,6 +32,7 @@ def test_empty_strings_are_not_accepted():
     with pytest.raises(ValueError):
         _ = CreatePostInputDto(**input_data)
 
+
 #  Tests that BaseModel validation errors are raised for invalid input values. Tags: [general behavior]
 def test_invalid_input_raises_error():
     # Arrange

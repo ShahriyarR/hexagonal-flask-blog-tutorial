@@ -37,3 +37,12 @@ class UserRepository(UserRepositoryInterface):
             return self.execute(query, data).fetchone()
         except Exception as err:
             raise UserDBOperationError() from err
+
+    def _get_all(self) -> list[model.User]:
+        data = ()
+        query = "SELECT * FROM user"
+        try:
+            return self.execute(query, data).fetchall()
+        except Exception as err:
+            raise UserDBOperationError() from err
+

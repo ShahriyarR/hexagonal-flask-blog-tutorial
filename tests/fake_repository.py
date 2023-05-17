@@ -2,9 +2,7 @@ import random
 from typing import Any
 
 from blog.domain.model import model
-from blog.domain.ports.repositories.user import (
-    UserRepositoryInterface,
-)
+from blog.domain.ports.repositories.user import UserRepositoryInterface
 
 
 class FakeUserRepository(UserRepositoryInterface):

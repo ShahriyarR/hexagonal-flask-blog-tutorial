@@ -12,7 +12,9 @@ from blog.configurator.config import get_db
 
 def _get_db() -> Callable[[], sqlite3.Connection]:
     db = sqlite3.connect(
-        "hexagonal_test.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False
+        "hexagonal_test.db",
+        detect_types=sqlite3.PARSE_DECLTYPES,
+        check_same_thread=False,
     )
 
     db.row_factory = sqlite3.Row
