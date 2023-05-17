@@ -14,7 +14,7 @@ class PostRepository(PostRepositoryInterface):
         data = (post.uuid, post.title, post.body, post.author_id, post.created)
         query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
         try:
-            return self.execute(query, data)
+            self.execute(query, data)
         except Exception as err:
             raise BlogDBOperationError(err) from err
 
@@ -30,7 +30,7 @@ class PostRepository(PostRepositoryInterface):
         data = (uuid,)
         query = "DELETE FROM post WHERE uuid = ?"
         try:
-            return self.execute(query, data)
+            self.execute(query, data)
         except Exception as err:
             raise BlogDBOperationError(err) from err
 

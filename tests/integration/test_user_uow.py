@@ -6,7 +6,6 @@ def test_add_user(get_fake_container, get_user_model_object):
         all_ = uow.user.get_all()
         # get the dictionary values
         assert len(all_) == 1
-        print(all_[0])
         assert all_[0]["username"] == "Shako"
 
 
