@@ -22,7 +22,7 @@ def register_user_factory(user_name: str, password: str) -> RegisterUserInputDto
 
 class CreatePostInputDto(BaseModel):
     uuid: UUID4 = Field(default_factory=uuid4)
-    author_id: str
+    author_id: UUID4
     title: str
     body: str
     created: datetime.datetime = Field(default_factory=datetime.datetime.now)
@@ -48,7 +48,7 @@ class CreatePostInputDto(BaseModel):
         return v
 
 
-def create_post_factory(title: str, body: str, author_id: int) -> CreatePostInputDto:
+def create_post_factory(title: str, body: str, author_id: UUID4) -> CreatePostInputDto:
     return CreatePostInputDto(title=title, body=body, author_id=author_id)
 
 

@@ -20,7 +20,7 @@ class PostService(PostServiceInterface):
     def _create(self, post: CreatePostInputDto) -> Optional[Post]:
         _post = post_factory(
             uuid=str(post.uuid),
-            author_id=post.author_id,
+            author_id=str(post.author_id),
             title=post.title,
             body=post.body,
             created=post.created,

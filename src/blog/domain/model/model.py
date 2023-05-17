@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from blog.domain.model.validators import valid_uuid
+
 
 @dataclass
 class Post:
@@ -26,6 +28,8 @@ def post_factory(
     uuid: str, author_id: str, title: str, body: str, created: datetime
 ) -> Post:
     # data validation should happen here
+    if not valid_uuid(author_id):
+        raise ValueError("Failed to verify if the string is valid UUID4")
     if not isinstance(created, datetime):
         raise TypeError("created should be a datetime type")
     if not body:
@@ -59,7 +63,7 @@ class User:
 
 def user_factory(uuid: str, user_name: str, password: str) -> User:
     # data validation should happen here
-    if len(uuid) > 36:
+    if not valid_uuid(uuid):
         raise ValueError("Failed to verify if the string is valid UUID4")
     if len(user_name) > 8:
         raise ValueError("User name should be maximum of 8 characters length")

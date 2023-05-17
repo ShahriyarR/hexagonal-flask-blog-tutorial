@@ -97,9 +97,10 @@ def test_hash_with_non_integer_author_id():
 #  valid input parameters are provided.
 #  Tags: [happy path]
 def test_valid_input_parameters():
-    post = post_factory(uuid4(), 1, "Test Title", "Test Body", datetime.now())
+    author_id = str(uuid4())
+    post = post_factory(str(uuid4()), str(author_id), "Test Title", "Test Body", datetime.now())
     assert isinstance(post, Post)
-    assert post.author_id == 1
+    assert post.author_id == author_id
     assert post.title == "Test Title"
     assert post.body == "Test Body"
     assert isinstance(post.created, datetime)
@@ -121,7 +122,7 @@ def test_empty_string_body():
 #  Tests that the function raises an error when a non-integer value is provided for the author_id parameter.
 #  Tags: [edge case]
 def test_non_integer_author_id():
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         post_factory(
             uuid4(), "not_an_integer", "Test Title", "Test Body", datetime.now()
         )
@@ -131,7 +132,7 @@ def test_non_integer_author_id():
 #  Tags: [edge case]
 def test_invalid_datetime_format():
     with pytest.raises(TypeError):
-        post_factory(uuid4(), 1, "Test Title", "Test Body", "invalid_datetime_format")
+        post_factory(uuid4(), uuid4(), "Test Title", "Test Body", "invalid_datetime_format")
 
 
 #  Tests that a User object can be created with valid uuid, user_name, and password. Tags: [happy path]
@@ -179,20 +180,15 @@ def test_comparing_user_object_with_non_user_object():
 
 
 #  Tests that the function returns a User instance with valid input values for uuid, user_name, and password. Tags: [happy path]
-def test_valid_input_values():
+def test_invalid_uuid():
     # Arrange
     uuid = "1234-5678"
     user_name = "testuser"
     password = "pass"
 
     # Act
-    user = user_factory(uuid, user_name, password)
-
-    # Assert
-    assert isinstance(user, User)
-    assert user.uuid == uuid
-    assert user.user_name == user_name
-    assert user.password == password
+    with pytest.raises(ValueError):
+        _ = user_factory(uuid, user_name, password)
 
 
 #  Tests that the function raises a ValueError when uuid has length greater than 16. Tags: [edge case]
