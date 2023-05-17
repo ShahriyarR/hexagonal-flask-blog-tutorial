@@ -98,7 +98,7 @@ def test_hash_with_non_integer_author_id():
 #  Tags: [happy path]
 def test_valid_input_parameters():
     author_id = str(uuid4())
-    post = post_factory(str(uuid4()), str(author_id), "Test Title", "Test Body", datetime.now())
+    post = post_factory(str(uuid4()), author_id, "Test Title", "Test Body", datetime.now())
     assert isinstance(post, Post)
     assert post.author_id == author_id
     assert post.title == "Test Title"
