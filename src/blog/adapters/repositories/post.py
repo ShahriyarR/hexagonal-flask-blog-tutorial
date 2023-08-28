@@ -12,7 +12,8 @@ class PostRepository(PostRepositoryInterface):
 
     def _add(self, post: model.Post) -> None:
         data = (post.uuid, post.title, post.body, post.author_id, post.created)
-        query = "INSERT INTO post (uuid, title, body, author_id, created) VALUES (?, ?, ?, ?, ?)"
+        query = ("INSERT INTO post (uuid, title, body, author_id, created)"
+                 " VALUES (?, ?, ?, ?, ?)")
         try:
             self.execute(query, data)
         except Exception as err:

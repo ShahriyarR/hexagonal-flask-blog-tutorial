@@ -2,7 +2,7 @@ from typing import Any, Optional
 
 from blog.domain.ports.repositories.exceptions import UserDBOperationError
 from blog.domain.ports.repositories.user import UserRepositoryInterface
-from src.blog.domain.model import model
+from blog.domain.model import model
 
 
 class UserRepository(UserRepositoryInterface):

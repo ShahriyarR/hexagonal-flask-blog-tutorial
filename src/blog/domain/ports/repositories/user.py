@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from src.blog.domain.model import model
+from blog.domain.model import model
 
 
 class UserRepositoryInterface(ABC):
@@ -25,7 +25,7 @@ class UserRepositoryInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _get_by_uuid(self, uuid: str) -> model.User:
+    def _get_by_uuid(self, uuid: str) -> Optional[model.User]:
         raise NotImplementedError
 
     @abstractmethod

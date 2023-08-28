@@ -49,7 +49,6 @@ class PostService(PostServiceInterface):
             post = self.uow.post.get_by_uuid(uuid)
             if post is None:
                 abort(404, f"Post uuid {uuid} doesn't exist.")
-
             if check_author and post["author_id"] != g.user["uuid"]:
                 abort(403)
             return post

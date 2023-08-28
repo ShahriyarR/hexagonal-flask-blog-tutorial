@@ -1,6 +1,5 @@
 import datetime
 from uuid import uuid4
-
 from pydantic import UUID4, BaseModel
 from pydantic.class_validators import validator
 from pydantic.fields import Field
