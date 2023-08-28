@@ -51,14 +51,9 @@ def load_logged_in_user(
 @blueprint.route("/register", methods=("GET", "POST"))
 @inject
 def register(user_service: UserService = Provide["user_service"]):
+    error = None
     if request.method == "POST":
-        user_name = request.form["username"]
-        password = request.form["password"]
-        error = None
-        if not user_name:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
+        error, password, user_name = _check_user_name_password(error)
         user_ = register_user_factory(user_name=user_name, password=password)
         if not error:
             try:
@@ -72,20 +67,22 @@ def register(user_service: UserService = Provide["user_service"]):
     return render_template("auth/register.html")
 
 
+def _check_user_name_password(error):
+    user_name = request.form["username"]
+    password = request.form["password"]
+    if not user_name:
+        error = "Username is required."
+    elif not password:
+        error = "Password is required."
+    return error, password, user_name
+
+
 @blueprint.route("/login", methods=("GET", "POST"))
 @inject
 def login(user_service: UserService = Provide["user_service"]):
+    error = None
     if request.method == "POST":
-        user_name = request.form["username"]
-        password = request.form["password"]
-
-        error = None
-        user = user_service.get_user_by_user_name(user_name=user_name)
-        if not user:
-            error = "Incorrect username."
-        elif not check_password_hash(user["password"], password):
-            error = "Incorrect password."
-
+        error, user = _validate_user_name_and_password(error, user_service)
         if not error:
             session.clear()
             session["user_id"] = user["uuid"]
@@ -94,6 +91,17 @@ def login(user_service: UserService = Provide["user_service"]):
         flash(error)
 
     return render_template("auth/login.html")
+
+
+def _validate_user_name_and_password(error, user_service):
+    user_name = request.form["username"]
+    password = request.form["password"]
+    user = user_service.get_user_by_user_name(user_name=user_name)
+    if not user:
+        error = "Incorrect username."
+    elif not check_password_hash(user["password"], password):
+        error = "Incorrect password."
+    return error, user
 
 
 @blueprint.route("/logout")

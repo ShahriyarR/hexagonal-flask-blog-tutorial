@@ -60,7 +60,7 @@ skips = ["B311"]
 [tool.flake8]
 max-line-length = 88
 select = ["C", "E", "F", "W", "B", "B9"]
-ignore = ["E203", "E501", "W503", "C812", "E731", "F811"]
+ignore = ["B907", "B902"]
 exclude = ["__init__.py"]
 
 

@@ -24,14 +24,9 @@ def index(post_service: PostService = Provide["post_service"]):
 @login_required
 @inject
 def create(post_service: PostService = Provide["post_service"]):
+    error = None
     if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["body"]
-        error = None
-
-        if not title:
-            error = "Title is required."
-
+        body, error, title = _validate_title_body(error)
         post = create_post_factory(author_id=g.user["uuid"], title=title, body=body)
         if not error:
             try:
@@ -45,21 +40,25 @@ def create(post_service: PostService = Provide["post_service"]):
     return render_template("post/create.html")
 
 
+def _validate_title_body(error):
+    title = request.form["title"]
+    body = request.form["body"]
+    if not title:
+        error = "Title is required."
+    if not body:
+        error = "Body is required."
+    return body, error, title
+
+
 @blueprint.route("/update/<string:uuid>", methods=("GET", "POST"))
 @login_required
 @inject
 def update(uuid, post_service: PostService = Provide["post_service"]):
     post = post_service.get_post_by_uuid(uuid)
+    error = None
     if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["body"]
-        error = None
-
-        if not title:
-            error = "Title is required."
-
+        body, error, title = _validate_title_body(error)
         _post = update_post_factory(uuid=uuid, title=title, body=body)
-
         if not error:
             try:
                 post_service.update(_post)
