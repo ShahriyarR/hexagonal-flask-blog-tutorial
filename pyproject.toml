@@ -1,5 +1,5 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
+requires = ["flit_core==3.8.0"]
 build-backend = "flit_core.buildapi"
 
 [project]
@@ -12,37 +12,42 @@ dynamic = ["version", "description"]
 dependencies = [
     "dependency-injector >= 4.41.0",
     "flask >= 2.3.2",
-    "pydantic >= 1.10.7",
+    "pydantic >= 2.3.0",
 ]
 
 [project.urls]
 Home = "https://github.com/ShahriyarR/hexagonal-flask-blog-tutorial"
 
 [project.optional-dependencies]
-test = [
-    "pytest-flask >= 1.2.0 ",
-    "pytest-cov >= 4.0.0",
+dev = [
+    "black",
+    "isort",
+    "autoflake",
+    "pytype; platform_system != 'Windows'",
+    "flake8",
+    "Flake8-pyproject",
+    "bandit",
+    "flake8-bugbear",
+    "flake8-cognitive-complexity",
+    "pre-commit",
+    "safety",
+    "pip-audit",
 ]
 
-dev = [
-    "black >=23.1.0",
-    "isort >=5.12.0",
-    "autoflake >=1.4",
-    "flake8 >=6.0.0",
-    "pre-commit >=2.21.0",
-    "pytype >= 2022.12.15",
-    "bandit >= 1.7.5",
-    "flake8-bugbear >= 22.12.6",
-    "flake8-cognitive-complexity >= 0.1.0",
+test = [
+    "pytest",
+    "pytest-flask",
+    "pytest-cov",
 ]
 
 [tool.isort]
 profile = "black"
 py_version = 310
+line_length = 88
+order_by_type = false
 skip = [".gitignore", ".dockerignore"]
 extend_skip = [".md", ".json"]
 skip_glob = ["docs/*"]
-
 
 [tool.black]
 line-length = 88
@@ -52,7 +57,17 @@ include = '\.pyi?$'
 [tool.bandit]
 skips = ["B311"]
 
+[tool.flake8]
+max-line-length = 88
+select = ["C", "E", "F", "W", "B", "B9"]
+ignore = ["E203", "E501", "W503", "C812", "E731", "F811"]
+exclude = ["__init__.py"]
+
+
 [tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration relatively slow (deselect with '-m \"not integration\"')",

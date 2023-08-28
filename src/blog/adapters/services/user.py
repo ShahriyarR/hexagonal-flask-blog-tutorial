@@ -17,7 +17,7 @@ class UserService(UserServiceInterface):
         with self.uow:
             self.uow.user.add(user)
             self.uow.commit()
-            return user
+        return user
 
     def _get_user_by_user_name(self, user_name: str) -> Optional[User]:
         with self.uow:

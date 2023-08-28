@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
-from src.blog.domain.model import model
+from blog.domain.model import model
 
 
 class PostRepositoryInterface(ABC):

@@ -1,0 +1,30 @@
+default_language_version:
+  python: python3.10
+
+default_stages: [commit, push]
+
+repos:
+  - repo: https://github.com/MarcoGorelli/absolufy-imports
+    rev: v0.3.1
+    hooks:
+        - id: absolufy-imports
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        entry: make lint
+        language: system
+        types: [ python ]
+        pass_filenames: false
+      - id: secure
+        name: secure
+        entry: make secure
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: pytype
+        name: pytype
+        entry: make type-check
+        language: system
+        types: [python]
+        pass_filenames: false
