@@ -15,19 +15,19 @@ class PostServiceInterface(ABC):
     def __init__(self, uow: PostUnitOfWorkInterface) -> None:
         raise NotImplementedError
 
-    def create(self, post: CreatePostInputDto) -> Optional[Post]:
+    def create(self, post: CreatePostInputDto) -> Optional[Post]:  # pragma: no cover
         return self._create(post)
 
-    def update(self, post: UpdatePostInputDto):
+    def update(self, post: UpdatePostInputDto):  # pragma: no cover
         return self._update(post)
 
-    def delete(self, post: DeletePostInputDto):
+    def delete(self, post: DeletePostInputDto):  # pragma: no cover
         return self._delete(post)
 
-    def get_all_blogs(self) -> Optional[list[Any]]:
+    def get_all_blogs(self) -> Optional[list[Any]]:  # pragma: no cover
         return self._get_all_blogs()
 
-    def get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:
+    def get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:  # pragma: no cover
         return self._get_post_by_uuid(uuid, check_author)
 
     @abstractmethod

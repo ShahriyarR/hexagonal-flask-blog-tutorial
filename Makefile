@@ -68,6 +68,9 @@ test-slow:
 test-integration:
 	${PYTHON} -m pytest -svvv -m "integration" tests
 
+test-cov:
+	${PYTHON} -m pytest -svvv --cov-report html --cov=src tests
+
 init-db:
 	${PYTHON} -m flask --app src.blog.adapters.entrypoints.app.application init-db
 
