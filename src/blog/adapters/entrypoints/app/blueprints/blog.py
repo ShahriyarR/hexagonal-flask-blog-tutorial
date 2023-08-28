@@ -1,4 +1,4 @@
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject, Provide
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 
 from blog.domain.ports.repositories.exceptions import BlogDBOperationError

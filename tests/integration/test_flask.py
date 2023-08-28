@@ -1,6 +1,8 @@
+import pytest
 from flask import session
 
 
+@pytest.mark.integration
 def test_register_user(get_fake_container, get_flask_client, get_flask_app):
     fake_user_service = get_fake_container.user_service()
     user_uow = get_fake_container.user_uow()
@@ -35,6 +37,7 @@ def test_register_user(get_fake_container, get_flask_client, get_flask_app):
             assert session["user_id"] == uuid
 
 
+@pytest.mark.integration
 def test_create_blog_post(get_fake_container, get_flask_client, get_flask_app):
     fake_user_service = get_fake_container.user_service()
     fake_post_service = get_fake_container.post_service()
@@ -56,7 +59,3 @@ def test_create_blog_post(get_fake_container, get_flask_client, get_flask_app):
             with post_uow:
                 posts = post_uow.post.get_all()
                 assert posts[0]["title"] == "test1"
-
-
-
-

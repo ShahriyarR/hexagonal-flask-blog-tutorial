@@ -1,6 +1,6 @@
 import functools
 
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject, Provide
 from flask import (
     Blueprint,
     flash,

@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from blog.domain.model.model import Post, User, post_factory, user_factory
+from blog.domain.model.model import Post, post_factory, User, user_factory
 
 
 #  Tests that a Post object can be created with valid parameters. Tags: [happy path]
