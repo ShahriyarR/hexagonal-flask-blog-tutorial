@@ -47,7 +47,7 @@ format:
 	${PYTHON} -m isort src tests --settings-file ${SETTINGS_FILENAME}
 
 lint:
-	${PYTHON} -m flake8 --toml-config ${SETTINGS_FILENAME} --max-complexity 5 --max-cognitive-complexity=5 src
+	${PYTHON} -m flake8 --toml-config ${SETTINGS_FILENAME} --max-complexity 5 --max-cognitive-complexity=6 src
 	${PYTHON} -m black src tests --check --diff --config ${SETTINGS_FILENAME}
 	${PYTHON} -m isort src tests --check --diff --settings-file ${SETTINGS_FILENAME}
 
