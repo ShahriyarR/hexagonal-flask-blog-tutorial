@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from blog.domain.model.schemas import CreatePostInputDto, create_post_factory
+from blog.domain.model.schemas import create_post_factory, CreatePostInputDto
 
 
 #  Tests that valid input values are accepted and returned as expected. Tags: [happy path]

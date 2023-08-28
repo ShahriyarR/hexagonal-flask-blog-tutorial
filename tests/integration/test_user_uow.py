@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.integration
 def test_add_user(get_fake_container, get_user_model_object):
     uow = get_fake_container.user_uow()
     with uow:
@@ -9,6 +13,7 @@ def test_add_user(get_fake_container, get_user_model_object):
         assert all_[0]["username"] == "Shako"
 
 
+@pytest.mark.integration
 def test_get_user_by_uuid(get_fake_container, get_user_model_object):
     uow = get_fake_container.user_uow()
     with uow:
@@ -19,6 +24,7 @@ def test_get_user_by_uuid(get_fake_container, get_user_model_object):
         assert result["username"] == "Shako"
 
 
+@pytest.mark.integration
 def test_get_user_by_user_name(get_fake_container, get_user_model_object):
     uow = get_fake_container.user_uow()
     with uow:
@@ -26,6 +32,7 @@ def test_get_user_by_user_name(get_fake_container, get_user_model_object):
         assert result["username"] == "Shako"
 
 
+@pytest.mark.integration
 def test_get_all_users(get_fake_container, get_user_model_object):
     uow = get_fake_container.user_uow()
     with uow:

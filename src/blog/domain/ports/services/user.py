@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from blog.domain.model.model import User
-from blog.domain.model.schemas import RegisterUserInputDto
+from blog.domain.model.schemas import RegisterUserInputDto, RegisterUserOutputDto
 from blog.domain.ports.unit_of_works.user import UserUnitOfWorkInterface
 
 
@@ -11,7 +11,7 @@ class UserServiceInterface(ABC):
     def __init__(self, uow: UserUnitOfWorkInterface) -> None:
         raise NotImplementedError
 
-    def create(self, user: RegisterUserInputDto) -> User:
+    def create(self, user: RegisterUserInputDto) -> RegisterUserOutputDto:
         return self._create(user)
 
     def get_user_by_user_name(self, user_name: str) -> Optional[User]:
@@ -21,7 +21,7 @@ class UserServiceInterface(ABC):
         return self._get_user_by_uuid(uuid)
 
     @abstractmethod
-    def _create(self, user: RegisterUserInputDto) -> User:
+    def _create(self, user: RegisterUserInputDto) -> RegisterUserOutputDto:
         raise NotImplementedError
 
     @abstractmethod

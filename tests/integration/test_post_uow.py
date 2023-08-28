@@ -1,6 +1,9 @@
 from copy import deepcopy
 
+import pytest
 
+
+@pytest.mark.integration
 def test_add_post(get_fake_container, get_post_model_object, get_user_model_object):
     post_uow = get_fake_container.post_uow()
     user_uow = get_fake_container.user_uow()
@@ -19,6 +22,7 @@ def test_add_post(get_fake_container, get_post_model_object, get_user_model_obje
         assert all_[0]["title"] == "awesome title"
 
 
+@pytest.mark.integration
 def test_get_post_by_uuid(get_fake_container, get_post_model_object):
     post_uow = get_fake_container.post_uow()
     with post_uow:
@@ -30,6 +34,7 @@ def test_get_post_by_uuid(get_fake_container, get_post_model_object):
         assert result["title"] == "awesome title"
 
 
+@pytest.mark.integration
 def test_get_all_posts(get_fake_container, get_post_model_object):
     post_uow = get_fake_container.post_uow()
     with post_uow:
@@ -38,6 +43,7 @@ def test_get_all_posts(get_fake_container, get_post_model_object):
         assert len(values) == 1
 
 
+@pytest.mark.integration
 def test_update_by_uuid(get_fake_container, get_post_model_object):
     post_uow = get_fake_container.post_uow()
     with post_uow:
@@ -51,6 +57,7 @@ def test_update_by_uuid(get_fake_container, get_post_model_object):
         assert old_post["title"] != new_post["title"]
 
 
+@pytest.mark.integration
 def test_delete_by_uuid(get_fake_container, get_post_model_object):
     post_uow = get_fake_container.post_uow()
     with post_uow:
