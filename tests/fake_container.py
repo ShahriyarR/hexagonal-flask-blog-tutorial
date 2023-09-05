@@ -7,7 +7,6 @@ from blog.adapters.services.post import PostService
 from blog.adapters.services.user import UserService
 from blog.adapters.unit_of_works.post import PostUnitOfWork
 from blog.adapters.unit_of_works.user import UserUnitOfWork
-from blog.configurator.config import get_db
 
 
 def _get_db() -> Callable[[], sqlite3.Connection]:

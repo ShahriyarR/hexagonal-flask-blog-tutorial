@@ -11,7 +11,7 @@ from flask import (
     session,
     url_for,
 )
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from blog.adapters.services.user import UserService
 from blog.domain.model.schemas import register_user_factory
@@ -54,7 +54,7 @@ def register(user_service: UserService = Provide["user_service"]):
     error = None
     if request.method == "POST":
         error, password, user_name = _check_user_name_password(error)
-        user_ = register_user_factory(user_name=user_name, password=password)
+        user_ = register_user_factory(user_name=user_name, password=generate_password_hash(password))
         if not error:
             try:
                 user_service.create(user_)

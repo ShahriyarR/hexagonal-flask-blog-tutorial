@@ -1,5 +1,7 @@
 from typing import Any, Optional
 
+from werkzeug.security import generate_password_hash
+
 from blog.domain.model import model
 from blog.domain.ports.repositories.exceptions import UserDBOperationError
 from blog.domain.ports.repositories.user import UserRepositoryInterface
@@ -25,8 +27,7 @@ class UserRepository(UserRepositoryInterface):
         data = (user_name,)
         query = "SELECT * FROM user WHERE username = ?"
         try:
-            result = self.execute(query, data).fetchone()
-            return result
+            return self.execute(query, data).fetchone()
         except Exception as err:
             raise UserDBOperationError() from err
 
