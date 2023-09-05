@@ -12,4 +12,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-hexagonal
+hexagonal.db
+hexagonal_test.db
