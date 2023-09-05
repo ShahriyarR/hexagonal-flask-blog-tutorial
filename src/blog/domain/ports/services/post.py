@@ -27,7 +27,9 @@ class PostServiceInterface(ABC):
     def get_all_blogs(self) -> Optional[list[Any]]:  # pragma: no cover
         return self._get_all_blogs()
 
-    def get_post_by_uuid(self, uuid: str, check_author: bool = True) -> Post:  # pragma: no cover
+    def get_post_by_uuid(
+        self, uuid: str, check_author: bool = True
+    ) -> Post:  # pragma: no cover
         return self._get_post_by_uuid(uuid, check_author)
 
     @abstractmethod

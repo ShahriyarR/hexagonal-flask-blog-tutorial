@@ -14,3 +14,4 @@ build/
 *.egg-info/
 hexagonal.db
 hexagonal_test.db
+hexagonal

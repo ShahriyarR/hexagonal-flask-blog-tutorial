@@ -1,6 +1,6 @@
 # Hexagonal Architecture with Flask and Dependency Injector
 
-## This project is a complete rewritten version of official Flask tutorial using Hexagonal Architecture
+## This project is a complete-rewritten version of official Flask tutorial using Hexagonal Architecture
 
 [Flask Blog tutorial](https://flask.palletsprojects.com/en/2.2.x/tutorial/)
 
@@ -24,23 +24,83 @@ You can read it from original author:
 
 Use virtualenv as:
 
-* `python3 -m venv .venv`
-* `source .venv/bin/activate`
+```console
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
 We use flit for the installation:
 
-Install flit:
+* Install flit:
 
-* `pip install flit==3.7.1`
+```console
+pip install flit==3.8.0
+```
 
-Install using make command:
+* Install using make command for development:
 
-`make install-dev`
+```console
+make install-dev
+```
 
 * Init the database
 
-`flask --app src.adapters.app.application init-db`
+```console
+make init-db
+```
 
 * Start development service:
 
-`flask --app src.adapters.app.application --debug run`
+```console
+make run
+```
+
+## Other commands
+
+* Format, sort the imports and also check the style
+
+```console
+make format
+```
+
+* Run linter for final check
+
+```console
+make lint
+```
+
+* Run tests all non-slow and non-integrated tests
+
+```console
+make test
+```
+
+* Run slow tests
+
+```console
+make test-slow
+```
+
+* Run integration tests
+
+```console
+make test-integration
+```
+
+* Run test coverage
+
+```console
+make test-cov
+```
+
+* Run type check
+
+```console
+make type-check
+```
+
+* Run security check
+
+```console
+make secure
+```
