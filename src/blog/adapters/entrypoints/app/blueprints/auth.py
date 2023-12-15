@@ -54,7 +54,7 @@ def register(user_service: UserService = Provide["user_service"]):
     error = None
     if request.method == "POST":
         error, password, user_name = _check_user_name_password(error)
-        user_ = register_user_factory(user_name=user_name, password=generate_password_hash(password))
+        user_ = register_user_factory(user_name=user_name, password=password)
         if not error:
             try:
                 user_service.create(user_)
