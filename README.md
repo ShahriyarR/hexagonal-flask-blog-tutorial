@@ -20,6 +20,16 @@ You can read it from original author:
 
 [The Pattern: Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/)
 
+### Current implementation
+
+Layers:
+
+![Layers](./docs/layers.excalidraw.png)
+
+Hexagonal View:
+
+TBD...
+
 ## How to install for development?
 
 Use virtualenv as:
