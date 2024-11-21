@@ -76,3 +76,6 @@ init-db:
 
 run:
 	${PYTHON} -m flask --app src.blog.adapters.entrypoints.app.application --debug run --host 0.0.0.0
+
+ngrok:
+	ngrok http --url=devfest.ngrok.dev 5000
