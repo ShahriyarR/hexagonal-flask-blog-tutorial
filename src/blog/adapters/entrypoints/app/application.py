@@ -9,7 +9,7 @@ from blog.configurator.containers import Container
 def create_app() -> Flask:
     app = Flask(__name__)
     container = Container()
-    app.secret_key = "patrick"
+    app.secret_key = "dev"
     app.container = container
     with app.app_context():
         init_app(app)
