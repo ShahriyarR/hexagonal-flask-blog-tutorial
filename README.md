@@ -1,5 +1,9 @@
 # Hexagonal Architecture with Flask and Dependency Injector
 
+## FlaskCon 2023 walkthrough
+
+[YouTube - Learn Flask the hard way: Introduce Architecture Patterns](https://www.youtube.com/watch?v=wrtCo2fBoD0)
+
 ## This project is a complete-rewritten version of official Flask tutorial using Hexagonal Architecture
 
 [Flask Blog tutorial](https://flask.palletsprojects.com/en/2.2.x/tutorial/)
